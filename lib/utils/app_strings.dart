@@ -17,6 +17,12 @@ String kSetNewPassDetail  = 'Please enter your new password.';
 String kFilterBy  = 'Filter By';
 String kUserReports  = 'User Reports';
 String kDashboard  = 'Dashboard';
+String kDeleteDetail  = 'This can’t be undone.';
+String kDeleteEntry  = 'Delete Entry?';
+String kActive  = 'Active';
+String kBlocked  = 'Blocked';
+String kPending  = 'Pending';
+String kComment  = 'I love Bradley Cooper Fun, easy listen. As many of you know, I love Bradly Cooper! The story about his icebath got me 😅';
 
 
 

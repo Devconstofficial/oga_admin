@@ -1,19 +1,22 @@
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
+
 import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class DashboardController extends GetxController {
-  var selectedUserType = ''.obs;
-  var selectedPayType = ''.obs;
-  var selectedReminderType = ''.obs;
-  var selectedFilters = <String>{}.obs;
-  var isNotificationVisible = false.obs;
   var selectedUserStatus = ''.obs;
-  var selectedLocation = ''.obs;
-  var isFreeDelivery = false.obs;
-  var isPayCash = false.obs;
+  var selectedStatus = ''.obs;
+  Rx<Uint8List?> selectedImage = Rx<Uint8List?>(null);
 
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      selectedImage.value = await image.readAsBytes();
+    }
+  }
 
   final List<Map<String, dynamic>> allUsers = [
     {"id": "00001", "name": "Christine Brooks", "location": "New York", "profileStatus": "Public", "accountStatus": "Blocked", "statusBackColor": kRedColor, "StatusColor": kRedColor.withOpacity(0.2)},

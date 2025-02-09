@@ -51,6 +51,7 @@ class AppStyles {
   EdgeInsets get appBarPadding => EdgeInsets.only(left: 28.0.w,right: 10.w,top: 30);
   EdgeInsets get paginationBtnPadding => EdgeInsets.symmetric(horizontal: 6.0.w);
   EdgeInsets get paddingAll20 => const EdgeInsets.all(20.0);
+  EdgeInsets get paddingAll24 => const EdgeInsets.all(24.0);
   EdgeInsets get paddingAll32 => const EdgeInsets.all(32.0);
   EdgeInsets get paddingAll16 => const EdgeInsets.all(16.0);
   EdgeInsets get contentPadding => EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h);

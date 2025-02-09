@@ -2,199 +2,148 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:oga_admin/view/widgets/delete_dialog.dart';
+import 'package:oga_admin/view/widgets/profile_dialog.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_images.dart';
 import '../../../utils/app_strings.dart';
 import '../../../utils/app_styles.dart';
 import '../../../utils/common_code.dart';
-import '../../side_menu/controller/menu_controller.dart';
 import '../../side_menu/side_menu.dart';
 import '../../widgets/custom_button.dart';
+import '../../widgets/post_detail_dialog.dart';
 import 'controller/user_report_controller.dart';
 
 class UserReportsScreen extends GetView<UserReportsController> {
   const UserReportsScreen({super.key});
-  // Widget statusUpdateDialogue(BuildContext context) {
-  //   double width = MediaQuery.of(context).size.width;
-  //
-  //   return Dialog(
-  //     backgroundColor: kWhiteColor,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: AppStyles.customBorder8,
-  //     ),
-  //     child: SizedBox(
-  //       width: 400,
-  //       child: Padding(
-  //         padding: AppStyles().paddingAll24,
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.end,
-  //               children: [
-  //                 InkWell(
-  //                   onTap: () {
-  //                     Get.back();
-  //                   },
-  //                   child: SvgPicture.asset(
-  //                     kCrossIcon,
-  //                     height: 16,
-  //                     width: 16,
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //             const SizedBox(
-  //               height: 32,
-  //             ),
-  //             Text(
-  //               "Update Status",
-  //               style: AppStyles.workSansTextStyle()
-  //                   .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
-  //             ),
-  //             Container(
-  //               height: 40,
-  //               width: width,
-  //               decoration: BoxDecoration(
-  //                   color: kWhiteColor,
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   border: Border.all(color: kFieldBorderColor)),
-  //               child: Obx(() {
-  //                 return DropdownButton<String>(
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   isExpanded: true,
-  //                   dropdownColor: kWhiteColor,
-  //                   focusColor: kWhiteColor,
-  //                   value: controller.selectedUserType.value.isNotEmpty
-  //                       ? controller.selectedUserType.value
-  //                       : null,
-  //                   hint: Padding(
-  //                     padding: const EdgeInsets.symmetric(horizontal: 12),
-  //                     child: Text(
-  //                       kStatus,
-  //                       style: AppStyles.workSansTextStyle()
-  //                           .copyWith(fontSize: 14.sp, color: kHintColor),
-  //                     ),
-  //                   ),
-  //                   icon: Padding(
-  //                     padding: const EdgeInsets.only(top: 5),
-  //                     child: Icon(Icons.arrow_drop_down_outlined,
-  //                         size: 25, color: kBlackColor.withOpacity(0.4)),
-  //                   ),
-  //                   underline: const SizedBox.shrink(),
-  //                   items: [kActive, kPending, kRejected, kDisabled]
-  //                       .map((String status) => DropdownMenuItem<String>(
-  //                     value: status,
-  //                     child: Padding(
-  //                       padding:
-  //                       const EdgeInsets.symmetric(horizontal: 12),
-  //                       child: Text(
-  //                         status,
-  //                         style: AppStyles.workSansTextStyle()
-  //                             .copyWith(fontSize: 14.sp),
-  //                       ),
-  //                     ),
-  //                   ))
-  //                       .toList(),
-  //                   onChanged: (String? newValue) {
-  //                     controller.selectedUserType.value = newValue!;
-  //                   },
-  //                 );
-  //               }),
-  //             ),
-  //             const SizedBox(
-  //               height: 10,
-  //             ),
-  //             Text(
-  //               "Can Pay in Cash",
-  //               style: AppStyles.workSansTextStyle()
-  //                   .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
-  //             ),
-  //             Container(
-  //               height: 40,
-  //               width: width,
-  //               decoration: BoxDecoration(
-  //                   color: kWhiteColor,
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   border: Border.all(color: kFieldBorderColor)),
-  //               child: Obx(() {
-  //                 return DropdownButton<String>(
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   isExpanded: true,
-  //                   dropdownColor: kWhiteColor,
-  //                   focusColor:    kWhiteColor,
-  //                   value: controller.selectedPayType.value.isNotEmpty
-  //                       ? controller.selectedPayType.value
-  //                       : null,
-  //                   hint: Padding(
-  //                     padding: const EdgeInsets.symmetric(horizontal: 12),
-  //                     child: Text(
-  //                       "Yes/no",
-  //                       style: AppStyles.workSansTextStyle()
-  //                           .copyWith(fontSize: 14.sp, color: kHintColor),
-  //                     ),
-  //                   ),
-  //                   icon: Padding(
-  //                     padding: const EdgeInsets.only(top: 5),
-  //                     child: Icon(Icons.arrow_drop_down_outlined,
-  //                         size: 25, color: kBlackColor.withOpacity(0.4)),
-  //                   ),
-  //                   underline: const SizedBox.shrink(),
-  //                   items: ['Yes', 'No']
-  //                       .map((String type) => DropdownMenuItem<String>(
-  //                     value: type,
-  //                     child: Padding(
-  //                       padding:
-  //                       const EdgeInsets.symmetric(horizontal: 12),
-  //                       child: Text(
-  //                         type,
-  //                         style: AppStyles.workSansTextStyle()
-  //                             .copyWith(fontSize: 14.sp),
-  //                       ),
-  //                     ),
-  //                   ))
-  //                       .toList(),
-  //                   onChanged: (String? newValue) {
-  //                     controller.selectedPayType.value = newValue!;
-  //                   },
-  //                 );
-  //               }),
-  //             ),
-  //             const SizedBox(
-  //               height: 52,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 CustomButton(
-  //                   text: "Cancel",
-  //                   height: 40,
-  //                   onTap: () {
-  //                     Get.back();
-  //                   },
-  //                   width: 75,
-  //                   textColor: kBlackColor,
-  //                   color: kWhiteColor,
-  //                   borderColor: kFieldBorderColor1,
-  //                   fontSize: 14.sp,
-  //                 ),
-  //                 CustomButton(
-  //                   text: "Update Now",
-  //                   height: 40,
-  //                   onTap: () {},
-  //                   width: 110,
-  //                   color: kPrimaryColor,
-  //                   fontSize: 14.sp,
-  //                 ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+
+  Widget statusUpdateDialogue(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    return Dialog(
+      backgroundColor: kBackColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppStyles.customBorder8,
+      ),
+      child: SizedBox(
+        width: 400,
+        child: Padding(
+          padding: AppStyles().paddingAll24,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: SvgPicture.asset(
+                      kCrossIcon,
+                      height: 16,
+                      width: 16,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Text(
+                "Update Status",
+                style: AppStyles.workSansTextStyle()
+                    .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 2,
+              ),
+              Container(
+                height: 40,
+                width: width,
+                decoration: BoxDecoration(
+                    color: kBackColor,
+                    borderRadius: AppStyles.customBorder8,
+                    border: Border.all(color: kGray3Color)),
+                child: Obx(() {
+                  return DropdownButton<String>(
+                    borderRadius: AppStyles.customBorder8,
+                    isExpanded: true,
+                    dropdownColor: kWhiteColor,
+                    focusColor: kWhiteColor,
+                    value: controller.selectedReportStatus.value.isNotEmpty
+                        ? controller.selectedReportStatus.value
+                        : null,
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        "Report Status",
+                        style: AppStyles.workSansTextStyle()
+                            .copyWith(fontSize: 14.sp, color: kSecondaryColor),
+                      ),
+                    ),
+                    icon: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Icon(Icons.arrow_drop_down_outlined,
+                          size: 25, color: kBlackColor.withOpacity(0.4)),
+                    ),
+                    underline: const SizedBox.shrink(),
+                    items: ["Pending", "Blocked"]
+                        .map((String status) => DropdownMenuItem<String>(
+                      value: status,
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          status,
+                          style: AppStyles.workSansTextStyle()
+                              .copyWith(fontSize: 14.sp),
+                        ),
+                      ),
+                    ))
+                        .toList(),
+                    onChanged: (String? newValue) {
+                      controller.selectedReportStatus.value = newValue!;
+                    },
+                  );
+                }),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    text: "Cancel",
+                    height: 40,
+                    onTap: () {
+                      Get.back();
+                    },
+                    width: 75,
+                    textColor: kBlackColor,
+                    color: kBackColor,
+                    borderColor: kGray3Color,
+                    fontSize: 14.sp,
+                  ),
+                  CustomButton(
+                    text: "Update Status",
+                    height: 40,
+                    onTap: () {
+                      Get.back();
+                    },
+                    width: 120,
+                    fontSize: 14.sp,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +174,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Dashboard",
+                                    kUserReports,
                                     style: AppStyles.workSansTextStyle()
                                         .copyWith(
                                         fontSize: 26.sp,
@@ -264,7 +213,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                       ),
                                       SizedBox(height: 8.h,),
                                       Text(
-                                        "Musfiq",
+                                        "Admin",
                                         style: AppStyles.workSansTextStyle()
                                             .copyWith(
                                             fontSize: 12.sp,
@@ -273,51 +222,19 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: 8.w,),
-                                  PopupMenuButton<String>(
-                                    color: kWhiteColor,
-                                    position: PopupMenuPosition.under,
-                                    shape: OutlineInputBorder(
-                                        borderRadius: AppStyles.customBorder8,
-                                        borderSide: BorderSide.none),
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        color: kWhiteColor,
-                                        size: 16),
-                                    onSelected: (value) {
-                                      controller.selectedReportStatus.value = value;
+                                  InkWell(
+                                    onTap: (){
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return ProfileDialog();
+                                        },
+                                      );
                                     },
-                                    itemBuilder: (BuildContext context) => [
-                                      // PopupMenuItem(
-                                      //   value: 'Active',
-                                      //   child: Text('Active',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: 'Pending',
-                                      //   child: Text('Pending',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: 'Rejected',
-                                      //   child: Text('Rejected',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: 'Disabled',
-                                      //   child: Text('Disabled',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                    ],
-                                  ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                                        child: const Icon(Icons.keyboard_arrow_down_outlined,color: kWhiteColor,size: 16,),
+                                      )),
                                 ],
                               ),
                             ),
@@ -371,8 +288,8 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                           Padding(
                                             padding: EdgeInsets.only(left: 16.w),
                                             child: Text(
-                                              controller.selectedReportStatus.value.isNotEmpty ?
-                                              controller.selectedReportStatus.value : "Report Status",
+                                              controller.selectedStatus.value.isNotEmpty ?
+                                              controller.selectedStatus.value : "Report Status",
                                               style: AppStyles.workSansTextStyle()
                                                   .copyWith(
                                                   fontSize: 14.sp,
@@ -390,38 +307,37 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                                 Icons.keyboard_arrow_down_outlined,
                                                 size: 16),
                                             onSelected: (value) {
-                                              controller.selectedReportStatus.value = value;
+                                              controller.selectedStatus.value = value;
                                             },
-                                            itemBuilder: (BuildContext context) => [
-                                              // PopupMenuItem(
-                                              //   value: 'Active',
-                                              //   child: Text('Active',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                              // PopupMenuItem(
-                                              //   value: 'Pending',
-                                              //   child: Text('Pending',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                              // PopupMenuItem(
-                                              //   value: 'Rejected',
-                                              //   child: Text('Rejected',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                              // PopupMenuItem(
-                                              //   value: 'Disabled',
-                                              //   child: Text('Disabled',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                            ],
+                                            itemBuilder: (BuildContext context) {
+                                              return [kPending, kBlocked]
+                                                  .map((status) {
+                                                return PopupMenuItem<String>(
+                                                  value: status,
+                                                  child: Row(
+                                                    children: [
+                                                      Obx(() => Checkbox(
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(3.r)
+                                                        ),
+                                                        value: controller.selectedStatus.value == status,
+                                                        onChanged: (bool? newValue) {
+                                                          controller.selectedStatus.value = status;
+                                                          Get.back();
+                                                        },
+                                                      )),
+                                                      Text(
+                                                        status,
+                                                        style: AppStyles.interTextStyle().copyWith(
+                                                          fontSize: 12,
+                                                           fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
                                           ),
                                         ],
                                       ),
@@ -469,7 +385,23 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                             DataColumn(
                                               label: Flexible(
                                                 child: Text(
-                                                  "User ID",
+                                                  "Report ID",
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  style:
+                                                  AppStyles.workSansTextStyle()
+                                                      .copyWith(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14.sp,
+                                                    color: kWhiteColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            DataColumn(
+                                              label: Flexible(
+                                                child: Text(
+                                                  "Content Type",
                                                   overflow: TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                   style:
@@ -501,23 +433,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                             DataColumn(
                                               label: Flexible(
                                                 child: Text(
-                                                  "Location",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style:
-                                                  AppStyles.workSansTextStyle()
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Flexible(
-                                                child: Text(
-                                                  "Profile Status",
+                                                  "Reason",
                                                   overflow: TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                   style:
@@ -534,7 +450,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                               headingRowAlignment: MainAxisAlignment.center,
                                               label: Flexible(
                                                 child: Text(
-                                                  "Account Status",
+                                                  "Status",
                                                   overflow: TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                   style:
@@ -569,10 +485,10 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                           rows: controller.currentPageUsers
                                               .map((user) => _buildDataRow(
                                               user['id']!,
+                                              user['type']!,
                                               user['name']!,
-                                              user['location']!,
-                                              user['profileStatus']!,
-                                              user['accountStatus']!,
+                                              user['reason']!,
+                                              user['status']!,
                                               user['statusBackColor'],
                                               user['StatusColor'],
                                               context))
@@ -743,7 +659,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
         ));
   }
 
-  DataRow _buildDataRow(String id, String name, String location, String age, String status,
+  DataRow _buildDataRow(String id, String type, String userName, String reason, String status,
       Color statusColor, Color statusBackColor, context) {
 
     return DataRow(
@@ -756,19 +672,19 @@ class UserReportsScreen extends GetView<UserReportsController> {
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
         )),
         DataCell(Text(
-          name,
+          type,
           textAlign: TextAlign.center,
           style: AppStyles.workSansTextStyle()
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
         )),
         DataCell(Text(
-          location,
+          userName,
           textAlign: TextAlign.center,
           style: AppStyles.workSansTextStyle()
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
         )),
         DataCell(Text(
-          age,
+          reason,
           textAlign: TextAlign.center,
           style: AppStyles.workSansTextStyle()
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
@@ -811,12 +727,12 @@ class UserReportsScreen extends GetView<UserReportsController> {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return statusUpdateDialogue(context);
-                          //   },
-                          // );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return statusUpdateDialogue(context);
+                            },
+                          );
                         },
                         child: SvgPicture.asset(
                           kEditIcon,
@@ -833,14 +749,12 @@ class UserReportsScreen extends GetView<UserReportsController> {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return DeleteDialog(
-                          //       onDelete: () {},
-                          //     );
-                          //   },
-                          // );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DeleteDialog();
+                            },
+                          );
                         },
                         child: SvgPicture.asset(
                           kDeleteIcon,
@@ -857,12 +771,12 @@ class UserReportsScreen extends GetView<UserReportsController> {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return userDetailDialogue(context);
-                          //   },
-                          // );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return PostDetailDialog(isReportPage: true,);
+                            },
+                          );
                         },
                         child: SvgPicture.asset(
                           kEyeIcon,

@@ -4,29 +4,22 @@ import 'package:get/get.dart';
 import '../../../../utils/app_colors.dart';
 
 class UserReportsController extends GetxController {
-  var selectedUserType = ''.obs;
-  var selectedPayType = ''.obs;
-  var selectedReminderType = ''.obs;
-  var selectedFilters = <String>{}.obs;
-  var isNotificationVisible = false.obs;
   var selectedReportStatus = ''.obs;
-  var selectedLocation = ''.obs;
-  var isFreeDelivery = false.obs;
-  var isPayCash = false.obs;
+  var selectedStatus = ''.obs;
 
 
   final List<Map<String, dynamic>> allUsers = [
-    {"id": "00001", "name": "Christine Brooks", "location": "New York", "profileStatus": "Public", "accountStatus": "Blocked", "statusBackColor": kRedColor, "StatusColor": kRedColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "London", "profileStatus": "Private", "accountStatus": "Active", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "Beijing", "profileStatus": "Public", "accountStatus": "Active", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Christine Brooks", "location": "Iceland", "profileStatus": "Private", "accountStatus": "Active", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "Iceland", "profileStatus": "Public", "accountStatus": "Active", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "Beijing", "profileStatus": "Private", "accountStatus": "Active", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Christine Brooks", "location": "New York", "profileStatus": "Public", "accountStatus": "Blocked", "statusBackColor": kRedColor, "StatusColor": kRedColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "London", "profileStatus": "Private", "accountStatus": "Blocked", "statusBackColor": kRedColor, "StatusColor": kRedColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "London", "profileStatus": "Private", "accountStatus": "Blocked", "statusBackColor": kRedColor, "StatusColor": kRedColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "London", "profileStatus": "Private", "accountStatus": "Blocked", "statusBackColor": kRedColor, "StatusColor": kRedColor.withOpacity(0.2)},
-    {"id": "00001", "name": "Rosie Pearson", "location": "London", "profileStatus": "Private", "accountStatus": "Blocked", "statusBackColor": kRedColor, "StatusColor": kRedColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Article", "name": "jane2023", "reason": "Inappropriate", "status": "Pending", "statusBackColor": kButtonColor, "StatusColor": kButtonColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Article", "name": "jane2023", "reason": "Inappropriate", "status": "Resolved", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Book", "name": "jane2023", "reason": "Inappropriate", "status": "Resolved", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Book", "name": "jane2023", "reason": "Inappropriate", "status": "Resolved", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Article", "name": "jane2023", "reason": "Inappropriate", "status": "Pending", "statusBackColor": kButtonColor, "StatusColor": kButtonColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Article", "name": "jane2023", "reason": "Inappropriate", "status": "Pending", "statusBackColor": kButtonColor, "StatusColor": kButtonColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Book", "name": "jane2023", "reason": "Inappropriate", "status": "Resolved", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Book", "name": "jane2023", "reason": "Inappropriate", "status": "Resolved", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Article", "name": "jane2023", "reason": "Inappropriate", "status": "Resolved", "statusBackColor": kGreenColor, "StatusColor": kGreenColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Article", "name": "jane2023", "reason": "Inappropriate", "status": "Pending", "statusBackColor": kButtonColor, "StatusColor": kButtonColor.withOpacity(0.2)},
+    {"id": "00001", "type": "Book", "name": "jane2023", "reason": "Inappropriate", "status": "Pending", "statusBackColor": kButtonColor, "StatusColor": kButtonColor.withOpacity(0.2)},
 
   ];
 

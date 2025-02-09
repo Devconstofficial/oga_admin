@@ -11,193 +11,140 @@ import '../../../utils/common_code.dart';
 import '../../side_menu/controller/menu_controller.dart';
 import '../../side_menu/side_menu.dart';
 import '../../widgets/custom_button.dart';
+import '../../widgets/delete_dialog.dart';
+import '../../widgets/post_detail_dialog.dart';
+import '../../widgets/profile_dialog.dart';
 import 'controller/dashboard_controller.dart';
 
 class DashboardScreen extends GetView<DashboardController> {
   const DashboardScreen({super.key});
 
-  // Widget statusUpdateDialogue(BuildContext context) {
-  //   double width = MediaQuery.of(context).size.width;
-  //
-  //   return Dialog(
-  //     backgroundColor: kWhiteColor,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: AppStyles.customBorder8,
-  //     ),
-  //     child: SizedBox(
-  //       width: 400,
-  //       child: Padding(
-  //         padding: AppStyles().paddingAll24,
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.end,
-  //               children: [
-  //                 InkWell(
-  //                   onTap: () {
-  //                     Get.back();
-  //                   },
-  //                   child: SvgPicture.asset(
-  //                     kCrossIcon,
-  //                     height: 16,
-  //                     width: 16,
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //             const SizedBox(
-  //               height: 32,
-  //             ),
-  //             Text(
-  //               "Update Status",
-  //               style: AppStyles.workSansTextStyle()
-  //                   .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
-  //             ),
-  //             Container(
-  //               height: 40,
-  //               width: width,
-  //               decoration: BoxDecoration(
-  //                   color: kWhiteColor,
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   border: Border.all(color: kFieldBorderColor)),
-  //               child: Obx(() {
-  //                 return DropdownButton<String>(
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   isExpanded: true,
-  //                   dropdownColor: kWhiteColor,
-  //                   focusColor: kWhiteColor,
-  //                   value: controller.selectedUserType.value.isNotEmpty
-  //                       ? controller.selectedUserType.value
-  //                       : null,
-  //                   hint: Padding(
-  //                     padding: const EdgeInsets.symmetric(horizontal: 12),
-  //                     child: Text(
-  //                       kStatus,
-  //                       style: AppStyles.workSansTextStyle()
-  //                           .copyWith(fontSize: 14.sp, color: kHintColor),
-  //                     ),
-  //                   ),
-  //                   icon: Padding(
-  //                     padding: const EdgeInsets.only(top: 5),
-  //                     child: Icon(Icons.arrow_drop_down_outlined,
-  //                         size: 25, color: kBlackColor.withOpacity(0.4)),
-  //                   ),
-  //                   underline: const SizedBox.shrink(),
-  //                   items: [kActive, kPending, kRejected, kDisabled]
-  //                       .map((String status) => DropdownMenuItem<String>(
-  //                     value: status,
-  //                     child: Padding(
-  //                       padding:
-  //                       const EdgeInsets.symmetric(horizontal: 12),
-  //                       child: Text(
-  //                         status,
-  //                         style: AppStyles.workSansTextStyle()
-  //                             .copyWith(fontSize: 14.sp),
-  //                       ),
-  //                     ),
-  //                   ))
-  //                       .toList(),
-  //                   onChanged: (String? newValue) {
-  //                     controller.selectedUserType.value = newValue!;
-  //                   },
-  //                 );
-  //               }),
-  //             ),
-  //             const SizedBox(
-  //               height: 10,
-  //             ),
-  //             Text(
-  //               "Can Pay in Cash",
-  //               style: AppStyles.workSansTextStyle()
-  //                   .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
-  //             ),
-  //             Container(
-  //               height: 40,
-  //               width: width,
-  //               decoration: BoxDecoration(
-  //                   color: kWhiteColor,
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   border: Border.all(color: kFieldBorderColor)),
-  //               child: Obx(() {
-  //                 return DropdownButton<String>(
-  //                   borderRadius: AppStyles.customBorder8,
-  //                   isExpanded: true,
-  //                   dropdownColor: kWhiteColor,
-  //                   focusColor:    kWhiteColor,
-  //                   value: controller.selectedPayType.value.isNotEmpty
-  //                       ? controller.selectedPayType.value
-  //                       : null,
-  //                   hint: Padding(
-  //                     padding: const EdgeInsets.symmetric(horizontal: 12),
-  //                     child: Text(
-  //                       "Yes/no",
-  //                       style: AppStyles.workSansTextStyle()
-  //                           .copyWith(fontSize: 14.sp, color: kHintColor),
-  //                     ),
-  //                   ),
-  //                   icon: Padding(
-  //                     padding: const EdgeInsets.only(top: 5),
-  //                     child: Icon(Icons.arrow_drop_down_outlined,
-  //                         size: 25, color: kBlackColor.withOpacity(0.4)),
-  //                   ),
-  //                   underline: const SizedBox.shrink(),
-  //                   items: ['Yes', 'No']
-  //                       .map((String type) => DropdownMenuItem<String>(
-  //                     value: type,
-  //                     child: Padding(
-  //                       padding:
-  //                       const EdgeInsets.symmetric(horizontal: 12),
-  //                       child: Text(
-  //                         type,
-  //                         style: AppStyles.workSansTextStyle()
-  //                             .copyWith(fontSize: 14.sp),
-  //                       ),
-  //                     ),
-  //                   ))
-  //                       .toList(),
-  //                   onChanged: (String? newValue) {
-  //                     controller.selectedPayType.value = newValue!;
-  //                   },
-  //                 );
-  //               }),
-  //             ),
-  //             const SizedBox(
-  //               height: 52,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 CustomButton(
-  //                   text: "Cancel",
-  //                   height: 40,
-  //                   onTap: () {
-  //                     Get.back();
-  //                   },
-  //                   width: 75,
-  //                   textColor: kBlackColor,
-  //                   color: kWhiteColor,
-  //                   borderColor: kFieldBorderColor1,
-  //                   fontSize: 14.sp,
-  //                 ),
-  //                 CustomButton(
-  //                   text: "Update Now",
-  //                   height: 40,
-  //                   onTap: () {},
-  //                   width: 110,
-  //                   color: kPrimaryColor,
-  //                   fontSize: 14.sp,
-  //                 ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
+  Widget statusUpdateDialogue(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return Dialog(
+      backgroundColor: kBackColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: AppStyles.customBorder8,
+      ),
+      child: SizedBox(
+        width: 400,
+        child: Padding(
+          padding: AppStyles().paddingAll24,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: SvgPicture.asset(
+                      kCrossIcon,
+                      height: 16,
+                      width: 16,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Text(
+                "Update Status",
+                style: AppStyles.workSansTextStyle()
+                    .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 2,
+              ),
+              Container(
+                height: 40,
+                width: width,
+                decoration: BoxDecoration(
+                    color: kBackColor,
+                    borderRadius: AppStyles.customBorder8,
+                    border: Border.all(color: kGray3Color)),
+                child: Obx(() {
+                  return DropdownButton<String>(
+                    borderRadius: AppStyles.customBorder8,
+                    isExpanded: true,
+                    dropdownColor: kWhiteColor,
+                    focusColor: kWhiteColor,
+                    value: controller.selectedUserStatus.value.isNotEmpty
+                        ? controller.selectedUserStatus.value
+                        : null,
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        "User Status",
+                        style: AppStyles.workSansTextStyle()
+                            .copyWith(fontSize: 14.sp, color: kSecondaryColor),
+                      ),
+                    ),
+                    icon: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Icon(Icons.arrow_drop_down_outlined,
+                          size: 25, color: kBlackColor.withOpacity(0.4)),
+                    ),
+                    underline: const SizedBox.shrink(),
+                    items: [kActive, kBlocked]
+                        .map((String status) => DropdownMenuItem<String>(
+                      value: status,
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          status,
+                          style: AppStyles.workSansTextStyle()
+                              .copyWith(fontSize: 14.sp),
+                        ),
+                      ),
+                    ))
+                        .toList(),
+                    onChanged: (String? newValue) {
+                      controller.selectedUserStatus.value = newValue!;
+                    },
+                  );
+                }),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    text: "Cancel",
+                    height: 40,
+                    onTap: () {
+                      Get.back();
+                    },
+                    width: 75,
+                    textColor: kBlackColor,
+                    color: kBackColor,
+                    borderColor: kGray3Color,
+                    fontSize: 14.sp,
+                  ),
+                  CustomButton(
+                    text: "Update Status",
+                    height: 40,
+                    onTap: () {
+                      Get.back();
+                    },
+                    width: 120,
+                    fontSize: 14.sp,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -268,7 +215,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                       ),
                                       SizedBox(height: 8.h,),
                                       Text(
-                                        "Musfiq",
+                                        "Admin",
                                         style: AppStyles.workSansTextStyle()
                                             .copyWith(
                                             fontSize: 12.sp,
@@ -277,51 +224,19 @@ class DashboardScreen extends GetView<DashboardController> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: 8.w,),
-                                  PopupMenuButton<String>(
-                                    color: kWhiteColor,
-                                    position: PopupMenuPosition.under,
-                                    shape: OutlineInputBorder(
-                                        borderRadius: AppStyles.customBorder8,
-                                        borderSide: BorderSide.none),
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        color: kWhiteColor,
-                                        size: 16),
-                                    onSelected: (value) {
-                                      controller.selectedUserStatus.value = value;
-                                    },
-                                    itemBuilder: (BuildContext context) => [
-                                      // PopupMenuItem(
-                                      //   value: 'Active',
-                                      //   child: Text('Active',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: 'Pending',
-                                      //   child: Text('Pending',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: 'Rejected',
-                                      //   child: Text('Rejected',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: 'Disabled',
-                                      //   child: Text('Disabled',style: AppStyles.interTextStyle()
-                                      //       .copyWith(
-                                      //       fontSize: 12,
-                                      //       fontWeight: FontWeight.w400),),
-                                      // ),
-                                    ],
-                                  ),
+                                  InkWell(
+                                      onTap: (){
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return const ProfileDialog();
+                                          },
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                                        child: const Icon(Icons.keyboard_arrow_down_outlined,color: kWhiteColor,size: 16,),
+                                      )),
                                 ],
                               ),
                             ),
@@ -418,8 +333,8 @@ class DashboardScreen extends GetView<DashboardController> {
                                           Padding(
                                             padding: EdgeInsets.only(left: 16.w),
                                             child: Text(
-                                              controller.selectedUserStatus.value.isNotEmpty ?
-                                              controller.selectedUserStatus.value : "User Status",
+                                              controller.selectedStatus.value.isNotEmpty ?
+                                              controller.selectedStatus.value : "User Status",
                                               style: AppStyles.workSansTextStyle()
                                                   .copyWith(
                                                   fontSize: 14.sp,
@@ -427,7 +342,6 @@ class DashboardScreen extends GetView<DashboardController> {
                                                   color: kBlackColor1),
                                             ),
                                           ),
-
                                           PopupMenuButton<String>(
                                             color: kWhiteColor,
                                             position: PopupMenuPosition.under,
@@ -438,38 +352,37 @@ class DashboardScreen extends GetView<DashboardController> {
                                                 Icons.keyboard_arrow_down_outlined,
                                                 size: 16),
                                             onSelected: (value) {
-                                              controller.selectedUserStatus.value = value;
+                                              controller.selectedStatus.value = value;
                                             },
-                                            itemBuilder: (BuildContext context) => [
-                                              // PopupMenuItem(
-                                              //   value: 'Active',
-                                              //   child: Text('Active',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                              // PopupMenuItem(
-                                              //   value: 'Pending',
-                                              //   child: Text('Pending',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                              // PopupMenuItem(
-                                              //   value: 'Rejected',
-                                              //   child: Text('Rejected',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                              // PopupMenuItem(
-                                              //   value: 'Disabled',
-                                              //   child: Text('Disabled',style: AppStyles.interTextStyle()
-                                              //       .copyWith(
-                                              //       fontSize: 12,
-                                              //       fontWeight: FontWeight.w400),),
-                                              // ),
-                                            ],
+                                            itemBuilder: (BuildContext context) {
+                                              return [kActive, kBlocked]
+                                                  .map((status) {
+                                                return PopupMenuItem<String>(
+                                                  value: status,
+                                                  child: Row(
+                                                    children: [
+                                                      Obx(() => Checkbox(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(3.r)
+                                                        ),
+                                                        value: controller.selectedStatus.value == status,
+                                                        onChanged: (bool? newValue) {
+                                                          controller.selectedStatus.value = status;
+                                                          Get.back();
+                                                        },
+                                                      )),
+                                                      Text(
+                                                        status,
+                                                        style: AppStyles.interTextStyle().copyWith(
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
                                           ),
                                         ],
                                       ),
@@ -859,12 +772,12 @@ class DashboardScreen extends GetView<DashboardController> {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return statusUpdateDialogue(context);
-                          //   },
-                          // );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return statusUpdateDialogue(context);
+                            },
+                          );
                         },
                         child: SvgPicture.asset(
                           kEditIcon,
@@ -881,14 +794,12 @@ class DashboardScreen extends GetView<DashboardController> {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return DeleteDialog(
-                          //       onDelete: () {},
-                          //     );
-                          //   },
-                          // );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DeleteDialog();
+                            },
+                          );
                         },
                         child: SvgPicture.asset(
                           kDeleteIcon,
@@ -905,12 +816,12 @@ class DashboardScreen extends GetView<DashboardController> {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return userDetailDialogue(context);
-                          //   },
-                          // );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return PostDetailDialog(isReportPage: false,);
+                            },
+                          );
                         },
                         child: SvgPicture.asset(
                           kEyeIcon,

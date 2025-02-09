@@ -24,7 +24,7 @@ class SendOtpScreen extends GetView<AuthController> {
         child: Scaffold(
           body: SingleChildScrollView(
             child: Padding(
-              padding: AppStyles().horizontal28,
+              padding: AppStyles().paddingAll32,
               child: Column(
                 children: [
                   Center(
@@ -35,17 +35,17 @@ class SendOtpScreen extends GetView<AuthController> {
                           SizedBox(height: 80.h,),
                           Center(
                             child: SizedBox(
-                              height: 150,
-                              width: 226,
+                              height: 150.h,
+                              width: 226.w,
                               child: Image.asset(kLogo,fit: BoxFit.cover,),
                             ),
                           ),
                           SizedBox(height: 37.h,),
                           Text(kForgotPass,
-                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w600,fontSize: 40,color: kBlackColor),textAlign: TextAlign.center,),
+                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w600,fontSize: 40.sp,color: kBlackColor),textAlign: TextAlign.center,),
                           const SizedBox(height: 2,),
                           Text(kForgotPassDetail,
-                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w400,fontSize: 16,color: kDarkGrey),textAlign: TextAlign.center,),
+                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w400,fontSize: 16.sp,color: kDarkGrey),textAlign: TextAlign.center,),
                           SizedBox(height: 44.h),
                           Row(
                             children: [

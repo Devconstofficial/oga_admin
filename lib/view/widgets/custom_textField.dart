@@ -14,6 +14,7 @@ class MyCustomTextField extends StatefulWidget {
   // final double fontSize;
   final Widget? prefixIcon;
   final Color? fillColor;
+  final Color? hoverColor;
   // final FontWeight fontWeight;
   final TextEditingController? controller;
   final TextInputType? textInputType;
@@ -43,6 +44,7 @@ class MyCustomTextField extends StatefulWidget {
     this.fillColor,
     this.hintColor,
     this.textColor,
+    this.hoverColor,
     this.errorText,
     this.isObscureText = false,
     this.showError = false,
@@ -86,7 +88,8 @@ class _MyCustomTextFieldState extends State<MyCustomTextField> {
         fillColor: widget.fillColor,
         filled: true,
         hintText: widget.hintText,
-        hintStyle: AppStyles.poppinsTextStyle().copyWith(color: widget.textColor,fontSize: 16),
+        hoverColor: widget.hoverColor,
+        hintStyle: AppStyles.workSansTextStyle().copyWith(color: widget.textColor,fontSize: 14,fontWeight: FontWeight.w400),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppStyles.customBorderAll,
           borderSide: BorderSide(

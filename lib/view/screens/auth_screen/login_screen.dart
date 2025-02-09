@@ -25,7 +25,7 @@ class LoginScreen extends GetView<AuthController> {
         child: Scaffold(
           body: SingleChildScrollView(
             child: Padding(
-              padding: AppStyles().horizontal28,
+              padding: AppStyles().paddingAll32,
               child: Column(
                 children: [
                   Center(
@@ -37,15 +37,15 @@ class LoginScreen extends GetView<AuthController> {
                           SizedBox(height: 80.h,),
                           Center(
                             child: SizedBox(
-                              height: 150,
-                              width: 226,
+                              height: 150.h,
+                              width: 226.w,
                               child: Image.asset(kLogo,fit: BoxFit.cover,),
                             ),
                           ),
                           SizedBox(height: 37.h,),
                           Center(
                             child: Text(kWelcomeBack,
-                              style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w600,fontSize: 40,color: kBlackColor  ),textAlign: TextAlign.center,),
+                              style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w600,fontSize: 40.sp,color: kBlackColor  ),textAlign: TextAlign.center,),
                           ),
                           const SizedBox(height: 2,),
                           Center(
