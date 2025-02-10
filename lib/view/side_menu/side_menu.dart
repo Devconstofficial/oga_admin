@@ -166,56 +166,53 @@ class _SideMenuState extends State<SideMenu> {
                   ),
                 ),
               ),
-              Positioned(
-                  bottom: 0,
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: GestureDetector(
-                      onTap: () {
-                        menuController.onItemTapped(2);
-                        Get.offAllNamed(kLoginScreenRoute);
-                      },
-                      child: SizedBox(
-                        width: width,
-                        height: 49.h,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                  height: 49.h,
-                                  child: Padding(
-                                    padding: EdgeInsets.only( left: 24.w),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          kLogoutIcon,
-                                          height: 22.h,
-                                          width: 22.w,
-                                          colorFilter: const ColorFilter.mode(
-                                            kWhiteColor,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                        SizedBox(width: 16.w,),
-                                        Text(
-                                          "Logout",
-                                          style: AppStyles.poppinsTextStyle().copyWith(
-                                              color: kWhiteColor,
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 15.sp
-                                          ),
-                                        ),
-                                      ],
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () {
+                    menuController.onItemTapped(2);
+                    Get.offAllNamed(kLoginScreenRoute);
+                  },
+                  child: SizedBox(
+                    width: width,
+                    height: 49.h,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                              height: 49.h,
+                              child: Padding(
+                                padding: EdgeInsets.only( left: 24.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      kLogoutIcon,
+                                      height: 22.h,
+                                      width: 22.w,
+                                      colorFilter: const ColorFilter.mode(
+                                        kWhiteColor,
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
-                                  )
-                              ),
-                            ),
-                          ],
+                                    SizedBox(width: 16.w,),
+                                    Text(
+                                      "Logout",
+                                      style: AppStyles.poppinsTextStyle().copyWith(
+                                          color: kWhiteColor,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 15.sp
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  )
+                  ),
+                ),
               ),
               SizedBox(height: 52.h)
             ],
