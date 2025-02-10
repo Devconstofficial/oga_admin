@@ -3,7 +3,7 @@ String basePathIcons = "assets/icons";
 
 /// ICONS
 String kCrossIcon = "$basePathIcons/cross.svg";
-String kDashboardIcon = "$basePathIcons/dashboard.svg";
+String kDashboardIcon = "$basePathIcons/dashboard.png";
 String kDeleteIcon = "$basePathIcons/delete.svg";
 String kEditIcon = "$basePathIcons/edit.svg";
 String kEdit1Icon = "$basePathIcons/edit1.svg";

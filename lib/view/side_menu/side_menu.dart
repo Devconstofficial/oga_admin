@@ -87,14 +87,11 @@ class _SideMenuState extends State<SideMenu> {
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      SvgPicture.asset(
+                                      Image.asset(
                                         kDashboardIcon,
                                         height: 26.h,
                                         width: 26.w,
-                                        colorFilter: ColorFilter.mode(
-                                          menuController.selectedIndex.value == 0 ? kButtonColor : kWhiteColor,
-                                          BlendMode.srcIn,
-                                        ),
+                                        color: menuController.selectedIndex.value == 0 ? kButtonColor : kWhiteColor,
                                       ),
                                       SizedBox(width: 12.w,),
                                       Text(
@@ -216,7 +213,6 @@ class _SideMenuState extends State<SideMenu> {
               ),
               SizedBox(height: 52.h)
             ],
-      
           ),
         ),
       ),
