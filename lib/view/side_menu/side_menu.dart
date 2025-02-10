@@ -100,8 +100,8 @@ class _SideMenuState extends State<SideMenu> {
                                             color: menuController.selectedIndex.value == 0
                                                 ? kButtonColor
                                                 : kWhiteColor,
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w600
+                                            fontSize: menuController.selectedIndex.value == 0 ? 18.sp : 16.sp,
+                                            fontWeight: menuController.selectedIndex.value == 0 ? FontWeight.w600 : FontWeight.w400
                                           ),
                                         ),
                                     ],
@@ -147,8 +147,8 @@ class _SideMenuState extends State<SideMenu> {
                                               color: menuController.selectedIndex.value == 1
                                                   ? kButtonColor
                                                   : kWhiteColor,
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600
+                                              fontSize: menuController.selectedIndex.value == 1 ? 18.sp : 16.sp,
+                                              fontWeight: menuController.selectedIndex.value == 1 ? FontWeight.w600 : FontWeight.w400
                                           ),
                                         ),
                                       ],
