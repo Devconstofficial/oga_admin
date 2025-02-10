@@ -12,12 +12,12 @@ import 'app_strings.dart';
 class RouteGenerator {
   static List<GetPage> getPages() {
     return [
-      GetPage(name: kLoginScreenRoute, page: () => const LoginScreen(), binding: ScreenBindings()),
-      GetPage(name: kSendOtpScreenRoute, page: () => const SendOtpScreen(), binding: ScreenBindings()),
-      GetPage(name: kVerifyOtpScreenRoute, page: () => const VerifyOtpScreen(), binding: ScreenBindings()),
-      GetPage(name: kChangePassScreenRoute, page: () => const ChangePassScreen(), binding: ScreenBindings()),
-      GetPage(name: kDashboardScreenRoute, page: () => const DashboardScreen(), binding: ScreenBindings()),
-      GetPage(name: kUserReportsScreenRoute, page: () => const UserReportsScreen(), binding: ScreenBindings()),
+      GetPage(name: kLoginScreenRoute, page: () => const LoginScreen(), binding: ScreenBindings(),transition: Transition.noTransition),
+      GetPage(name: kSendOtpScreenRoute, page: () => const SendOtpScreen(), binding: ScreenBindings(),transition: Transition.noTransition),
+      GetPage(name: kVerifyOtpScreenRoute, page: () => const VerifyOtpScreen(), binding: ScreenBindings(),transition: Transition.noTransition),
+      GetPage(name: kChangePassScreenRoute, page: () => const ChangePassScreen(), binding: ScreenBindings(),transition: Transition.noTransition),
+      GetPage(name: kDashboardScreenRoute, page: () => const DashboardScreen(), binding: ScreenBindings(),transition: Transition.noTransition),
+      GetPage(name: kUserReportsScreenRoute, page: () => const UserReportsScreen(), binding: ScreenBindings(),transition: Transition.noTransition),
     ];
   }
 }
