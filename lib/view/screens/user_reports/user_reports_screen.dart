@@ -778,7 +778,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                             },
                           );
                         },
-                        child: SvgPicture.asset(
+                        child: Image.asset(
                           kEyeIcon,
                           height: 19.h,
                           width: 19.w,

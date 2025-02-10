@@ -823,7 +823,7 @@ class DashboardScreen extends GetView<DashboardController> {
                             },
                           );
                         },
-                        child: SvgPicture.asset(
+                        child: Image.asset(
                           kEyeIcon,
                           height: 19.h,
                           width: 19.w,
