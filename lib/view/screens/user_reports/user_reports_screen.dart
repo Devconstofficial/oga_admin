@@ -52,9 +52,9 @@ class UserReportsScreen extends GetView<UserReportsController> {
                 height: 32,
               ),
               Text(
-                "Update Status",
+                "Report Status",
                 style: AppStyles.workSansTextStyle()
-                    .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                    .copyWith(fontSize: 14, fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 2,
@@ -80,13 +80,13 @@ class UserReportsScreen extends GetView<UserReportsController> {
                       child: Text(
                         "Report Status",
                         style: AppStyles.workSansTextStyle()
-                            .copyWith(fontSize: 14.sp, color: kSecondaryColor),
+                            .copyWith(fontSize: 14, color: kSecondaryColor),
                       ),
                     ),
-                    icon: Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Icon(Icons.arrow_drop_down_outlined,
-                          size: 25, color: kBlackColor.withOpacity(0.4)),
+                    icon: const Padding(
+                      padding: EdgeInsets.only(top: 5,right: 5),
+                      child: Icon(Icons.keyboard_arrow_down_outlined,
+                          size: 20, color: kGray4Color),
                     ),
                     underline: const SizedBox.shrink(),
                     items: ["Pending", "Blocked"]
@@ -98,7 +98,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                         child: Text(
                           status,
                           style: AppStyles.workSansTextStyle()
-                              .copyWith(fontSize: 14.sp),
+                              .copyWith(fontSize: 14),
                         ),
                       ),
                     ))
@@ -125,7 +125,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                     textColor: kBlackColor,
                     color: kBackColor,
                     borderColor: kGray3Color,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                   ),
                   CustomButton(
                     text: "Update Status",
@@ -134,7 +134,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                       Get.back();
                     },
                     width: 120,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                   ),
                 ],
               )
@@ -227,7 +227,7 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return ProfileDialog();
+                                          return const ProfileDialog();
                                         },
                                       );
                                     },
@@ -310,27 +310,26 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                               controller.selectedStatus.value = value;
                                             },
                                             itemBuilder: (BuildContext context) {
-                                              return [kPending, kBlocked]
-                                                  .map((status) {
+                                              return [kPending, kBlocked].map((status) {
                                                 return PopupMenuItem<String>(
                                                   value: status,
                                                   child: Row(
                                                     children: [
-                                                      Obx(() => Checkbox(
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(3.r)
-                                                        ),
-                                                        value: controller.selectedStatus.value == status,
-                                                        onChanged: (bool? newValue) {
-                                                          controller.selectedStatus.value = status;
-                                                          Get.back();
+                                                      Obx(() => Radio<String>(
+                                                        value: status,
+                                                        groupValue: controller.selectedStatus.value,
+                                                        onChanged: (String? newValue) {
+                                                          if (newValue != null) {
+                                                            controller.selectedStatus.value = newValue;
+                                                            Get.back();
+                                                          }
                                                         },
                                                       )),
                                                       Text(
                                                         status,
                                                         style: AppStyles.interTextStyle().copyWith(
                                                           fontSize: 12,
-                                                           fontWeight: FontWeight.w400,
+                                                          fontWeight: FontWeight.w400,
                                                         ),
                                                       ),
                                                     ],

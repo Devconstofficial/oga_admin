@@ -40,10 +40,9 @@ class AppStyles {
     Radius.circular(8.r),
   );
 
-  static BorderRadius get customBorder10 => BorderRadius.all(
-    Radius.circular(10.r),
+  static BorderRadius get customBorder10 => const BorderRadius.all(
+    Radius.circular(10),
   );
-
 
 
   EdgeInsets get horizontal28 => EdgeInsets.symmetric(horizontal: 28.w);

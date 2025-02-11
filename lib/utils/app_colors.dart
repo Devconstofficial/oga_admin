@@ -14,5 +14,6 @@ const Color kRedColor = Color(0xFFEF3826);
 const Color kBlackColor = Color(0xFF000000);
 const Color kBlackColor1 = Color(0xFF202224);
 const Color kBlackColor2 = Color(0xFF212529);
+const Color kGray4Color = Color(0xFFC6C6C6);
 const Color kGray2Color = Color(0xFF7D7D7D);
 const Color kGray3Color = Color(0xFFCED4DA);
