@@ -71,8 +71,8 @@ class DashboardScreen extends GetView<DashboardController> {
                   return DropdownButton<String>(
                     borderRadius: AppStyles.customBorder8,
                     isExpanded: true,
-                    dropdownColor: kWhiteColor,
-                    focusColor: kWhiteColor,
+                    dropdownColor: kBackColor,
+                    focusColor: kBackColor,
                     value: controller.selectedUserStatus.value.isNotEmpty
                         ? controller.selectedUserStatus.value
                         : null,
@@ -183,16 +183,6 @@ class DashboardScreen extends GetView<DashboardController> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   const Spacer(),
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      borderRadius: AppStyles.customBorder8,
-                                      color: kWhiteColor.withOpacity(0.12)
-                                    ),
-                                    child: Center(child: SvgPicture.asset(kNotiIcon,height: 14,width: 14,)),
-                                  ),
-                                  SizedBox(width: 26.w,),
                                   SizedBox(
                                     height: 60,
                                     width: 60,

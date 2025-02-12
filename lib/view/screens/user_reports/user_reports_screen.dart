@@ -70,8 +70,8 @@ class UserReportsScreen extends GetView<UserReportsController> {
                   return DropdownButton<String>(
                     borderRadius: AppStyles.customBorder8,
                     isExpanded: true,
-                    dropdownColor: kWhiteColor,
-                    focusColor: kWhiteColor,
+                    dropdownColor: kBackColor,
+                    focusColor: kBackColor,
                     value: controller.selectedReportStatus.value.isNotEmpty
                         ? controller.selectedReportStatus.value
                         : null,
