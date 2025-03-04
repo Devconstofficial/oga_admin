@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_images.dart';
@@ -16,7 +15,6 @@ class ChangePassScreen extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
         onTap: () {
           CommonCode.unFocus(context);
@@ -32,52 +30,97 @@ class ChangePassScreen extends GetView<AuthController> {
                       width: 505,
                       child: Column(
                         children: [
-                          SizedBox(height: 80.h,),
+                          SizedBox(
+                            height: 80.h,
+                          ),
                           Center(
                             child: SizedBox(
                               height: 150.h,
                               width: 226.w,
-                              child: Image.asset(kLogo,fit: BoxFit.cover,),
+                              child: Image.asset(
+                                kLogo,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 37.h,),
-                          Text(kSetNewPass,
-                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w600,fontSize: 40.sp,color: kBlackColor  ),textAlign: TextAlign.center,),
-                          const SizedBox(height: 2,),
-                          Text(kSetNewPassDetail,
-                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w400,color: kDarkGrey),textAlign: TextAlign.center,),
-                          SizedBox(height: 46.h,),
-                          Obx(() => MyCustomTextField(
-                            hintText: kPasswordHint,
-                            fillColor: kWhiteColor,
-                            suffixIcon: controller.isOldPasswordVisible.value
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                            isObscureText: controller.isOldPasswordVisible.value ? false : true,
-                            suffixOnPress: () {
-                              controller.isOldPasswordVisible.value =
-                              !controller.isOldPasswordVisible.value;
-                            },
-                            textInputType: TextInputType.text,
-                          ),),
+                          SizedBox(
+                            height: 37.h,
+                          ),
+                          Text(
+                            kSetNewPass,
+                            style: AppStyles.poppinsTextStyle().copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 40.sp,
+                                color: kBlackColor),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            kSetNewPassDetail,
+                            style: AppStyles.poppinsTextStyle().copyWith(
+                                fontWeight: FontWeight.w400, color: kDarkGrey),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 46.h,
+                          ),
+                          Obx(
+                            () => MyCustomTextField(
+                              controller: controller.newPasswordController,
+                              hintText: kPasswordHint,
+                              fillColor: kWhiteColor,
+                              suffixIcon: controller.isOldPasswordVisible.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              isObscureText:
+                                  controller.isOldPasswordVisible.value
+                                      ? false
+                                      : true,
+                              suffixOnPress: () {
+                                controller.isOldPasswordVisible.value =
+                                    !controller.isOldPasswordVisible.value;
+                              },
+                              textInputType: TextInputType.text,
+                            ),
+                          ),
                           SizedBox(height: 24.h),
-                          Obx(() => MyCustomTextField(
-                            hintText: kPasswordHint,
-                            fillColor: kWhiteColor,
-                            suffixIcon: controller.isNewPasswordVisible.value
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                            isObscureText: controller.isNewPasswordVisible.value ? false : true,
-                            suffixOnPress: () {
-                              controller.isNewPasswordVisible.value =
-                              !controller.isNewPasswordVisible.value;
-                            },
-                            textInputType: TextInputType.text,
-                          ),),
-                          SizedBox(height: 44.h,),
-                          CustomButton(text: kSetNewPass, height: 68.h, onTap: (){
-                            Get.toNamed(kLoginScreenRoute);
-                          }),
+                          Obx(
+                            () => MyCustomTextField(
+                              controller:
+                                  controller.newPasswordConfirmController,
+                              hintText: kPasswordHint,
+                              fillColor: kWhiteColor,
+                              suffixIcon: controller.isNewPasswordVisible.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              isObscureText:
+                                  controller.isNewPasswordVisible.value
+                                      ? false
+                                      : true,
+                              suffixOnPress: () {
+                                controller.isNewPasswordVisible.value =
+                                    !controller.isNewPasswordVisible.value;
+                              },
+                              textInputType: TextInputType.text,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 44.h,
+                          ),
+                          Obx(() => controller.isLoading.value
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                  color: kDarkGrey,
+                                ))
+                              : CustomButton(
+                                  text: kSetNewPass,
+                                  height: 68.h,
+                                  onTap: () {
+                                    controller.changePassword();
+                                    //  Get.toNamed(kLoginScreenRoute);
+                                  })),
                         ],
                       ),
                     ),
@@ -86,8 +129,6 @@ class ChangePassScreen extends GetView<AuthController> {
               ),
             ),
           ),
-        )
-    );
+        ));
   }
 }
-

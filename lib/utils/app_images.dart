@@ -13,11 +13,10 @@ String kFilterIcon = "$basePathIcons/filter.svg";
 String kLogoutIcon = "$basePathIcons/logout.svg";
 String kNotiIcon = "$basePathIcons/noti.svg";
 
-
-
 /// IMAGES
 String kEnableLocation = "$basePath/enableLocation.png";
 String kLogo = "$basePath/app_logo_transparent.png";
 String kLogoWhite = "$basePath/app_logo_white.png";
 String kUser1Image = "$basePath/user1.png";
 String kAvatarImage = "$basePath/avatar.png";
+String kUserImage = "$basePath/user.png";

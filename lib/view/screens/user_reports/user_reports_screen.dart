@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_network/image_network.dart';
+import 'package:oga_admin/models/report_model.dart';
 import 'package:oga_admin/view/widgets/delete_dialog.dart';
 import 'package:oga_admin/view/widgets/profile_dialog.dart';
 import '../../../utils/app_colors.dart';
@@ -84,24 +86,24 @@ class UserReportsScreen extends GetView<UserReportsController> {
                       ),
                     ),
                     icon: const Padding(
-                      padding: EdgeInsets.only(top: 5,right: 5),
+                      padding: EdgeInsets.only(top: 5, right: 5),
                       child: Icon(Icons.keyboard_arrow_down_outlined,
                           size: 20, color: kGray4Color),
                     ),
                     underline: const SizedBox.shrink(),
-                    items: ["Pending", "Blocked"]
+                    items: ["Pending", "Resolved"]
                         .map((String status) => DropdownMenuItem<String>(
-                      value: status,
-                      child: Padding(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          status,
-                          style: AppStyles.workSansTextStyle()
-                              .copyWith(fontSize: 14),
-                        ),
-                      ),
-                    ))
+                              value: status,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  status,
+                                  style: AppStyles.workSansTextStyle()
+                                      .copyWith(fontSize: 14),
+                                ),
+                              ),
+                            ))
                         .toList(),
                     onChanged: (String? newValue) {
                       controller.selectedReportStatus.value = newValue!;
@@ -149,541 +151,649 @@ class UserReportsScreen extends GetView<UserReportsController> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
-        onTap: () {
-          CommonCode.unFocus(context);
-        },
-        child: Obx(
-              () {
-            return Scaffold(
-              backgroundColor: kBackColor,
-              body: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SideMenu(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            color: kButtonColor,
-                            height: 80,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 32.w),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    kUserReports,
-                                    style: AppStyles.workSansTextStyle()
-                                        .copyWith(
-                                        fontSize: 26.sp,
-                                        color: kWhiteColor,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      borderRadius: AppStyles.customBorder8,
-                                      color: kWhiteColor.withOpacity(0.12)
-                                    ),
-                                    child: Center(child: SvgPicture.asset(kNotiIcon,height: 14,width: 14,)),
-                                  ),
-                                  SizedBox(width: 26.w,),
-                                  SizedBox(
+    return GestureDetector(onTap: () {
+      CommonCode.unFocus(context);
+    }, child: Obx(
+      () {
+        return Scaffold(
+          backgroundColor: kBackColor,
+          body: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SideMenu(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        color: kButtonColor,
+                        height: 80,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.h, horizontal: 32.w),
+                          child: Row(
+                            children: [
+                              Text(
+                                kUserReports,
+                                style: AppStyles.workSansTextStyle().copyWith(
+                                    fontSize: 26.sp,
+                                    color: kWhiteColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Spacer(),
+                              Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius: AppStyles.customBorder8,
+                                    color: kWhiteColor.withOpacity(0.12)),
+                                child: Center(
+                                    child: SvgPicture.asset(
+                                  kNotiIcon,
+                                  height: 14,
+                                  width: 14,
+                                )),
+                              ),
+                              SizedBox(
+                                width: 26.w,
+                              ),
+                              Obx(() => SizedBox(
                                     height: 60,
                                     width: 60,
                                     child: ClipRRect(
                                       borderRadius: AppStyles.customBorder16,
-                                        child: Image.asset(kUser1Image,fit: BoxFit.cover,)),
+                                      child: controller.user.value == null
+                                          ? const Center(
+                                              child: CircularProgressIndicator(
+                                                color: kWhiteColor,
+                                              ),
+                                            )
+                                          : controller.user.value!
+                                                  .profilePicture.isEmpty
+                                              ? Image.asset(kUserImage)
+                                              : ImageNetwork(
+                                                  image: controller.user.value!
+                                                      .profilePicture,
+                                                  width: 60,
+                                                  height: 60,
+                                                  duration: 1500,
+                                                  curve: Curves.easeIn,
+                                                  onPointer: true,
+                                                  debugPrint: false,
+                                                  fitAndroidIos: BoxFit.cover,
+                                                  fitWeb: BoxFitWeb.cover,
+                                                  onError: Icon(
+                                                      Icons.broken_image,
+                                                      size: 40.sp,
+                                                      color: kWhiteColor),
+                                                  onLoading:
+                                                      const CircularProgressIndicator(
+                                                    color: kWhiteColor,
+                                                  ),
+                                                  imageCache:
+                                                      AssetImage(kUser1Image),
+                                                ),
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 18.w,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(() => Text(
+                                        controller.user.value == null
+                                            ? ""
+                                            : controller.user.value!.name,
+                                        style: AppStyles.workSansTextStyle()
+                                            .copyWith(
+                                                fontSize: 14.sp,
+                                                color: kWhiteColor,
+                                                fontWeight: FontWeight.w500),
+                                      )),
+                                  SizedBox(
+                                    height: 8.h,
                                   ),
-                                  SizedBox(width: 18.w,),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Musfiq",
-                                        style: AppStyles.workSansTextStyle()
-                                            .copyWith(
-                                            fontSize: 14.sp,
-                                            color: kWhiteColor,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(height: 8.h,),
-                                      Text(
-                                        "Admin",
-                                        style: AppStyles.workSansTextStyle()
-                                            .copyWith(
+                                  Text(
+                                    "Admin",
+                                    style: AppStyles.workSansTextStyle()
+                                        .copyWith(
                                             fontSize: 12.sp,
                                             color: kWhiteColor,
                                             fontWeight: FontWeight.w400),
-                                      ),
-                                    ],
                                   ),
-                                  InkWell(
-                                    onTap: (){
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return const ProfileDialog();
-                                        },
-                                      );
-                                    },
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                                        child: const Icon(Icons.keyboard_arrow_down_outlined,color: kWhiteColor,size: 16,),
-                                      )),
                                 ],
                               ),
-                            ),
+                              InkWell(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return const ProfileDialog();
+                                      },
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 16.0.w),
+                                    child: const Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: kWhiteColor,
+                                      size: 16,
+                                    ),
+                                  )),
+                            ],
                           ),
-                          Padding(
-                            padding: AppStyles().horizontal32,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ),
+                      Padding(
+                        padding: AppStyles().horizontal32,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                SizedBox(
-                                  height: 32.h,
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      height: 70.h,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          color: kWhiteColor,
-                                          border: Border.all(color: kTableBorderColor,width: 0.6)),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 24.w),
-                                            child: SvgPicture.asset(
-                                              kFilterIcon,
-                                              height: 23,
-                                              width: 20,
-                                              colorFilter: const ColorFilter.mode(kBlackColor, BlendMode.srcIn),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 0.3,
-                                            color: kLightGreyColor,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 24.w),
-                                            child: Text(
-                                              kFilterBy,
-                                              style: AppStyles.workSansTextStyle()
-                                                  .copyWith(
+                                Container(
+                                  height: 70.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: kWhiteColor,
+                                      border: Border.all(
+                                          color: kTableBorderColor,
+                                          width: 0.6)),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 24.w),
+                                        child: SvgPicture.asset(
+                                          kFilterIcon,
+                                          height: 23,
+                                          width: 20,
+                                          colorFilter: const ColorFilter.mode(
+                                              kBlackColor, BlendMode.srcIn),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 0.3,
+                                        color: kLightGreyColor,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 24.w),
+                                        child: Text(
+                                          kFilterBy,
+                                          style: AppStyles.workSansTextStyle()
+                                              .copyWith(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 0.3,
-                                            color: kLightGreyColor,
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 16.w),
-                                            child: Text(
-                                              controller.selectedStatus.value.isNotEmpty ?
-                                              controller.selectedStatus.value : "Report Status",
-                                              style: AppStyles.workSansTextStyle()
-                                                  .copyWith(
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 0.3,
+                                        color: kLightGreyColor,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 16.w),
+                                        child: Text(
+                                          "Report Status",
+                                          style: AppStyles.workSansTextStyle()
+                                              .copyWith(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
                                                   color: kBlackColor1),
-                                            ),
-                                          ),
-                                          PopupMenuButton<String>(
-                                            color: kWhiteColor,
-                                            position: PopupMenuPosition.under,
-                                            shape: OutlineInputBorder(
-                                                borderRadius: AppStyles.customBorder8,
-                                                borderSide: BorderSide.none),
-                                            icon: const Icon(
-                                                Icons.keyboard_arrow_down_outlined,
-                                                size: 16),
-                                            onSelected: (value) {
-                                              controller.selectedStatus.value = value;
-                                            },
-                                            itemBuilder: (BuildContext context) {
-                                              return [kPending, kBlocked].map((status) {
-                                                return PopupMenuItem<String>(
-                                                  value: status,
-                                                  child: Row(
-                                                    children: [
-                                                      Obx(() => Radio<String>(
-                                                        value: status,
-                                                        groupValue: controller.selectedStatus.value,
-                                                        onChanged: (String? newValue) {
-                                                          if (newValue != null) {
-                                                            controller.selectedStatus.value = newValue;
-                                                            Get.back();
+                                        ),
+                                      ),
+                                      PopupMenuButton<String>(
+                                        color: kWhiteColor,
+                                        position: PopupMenuPosition.under,
+                                        shape: OutlineInputBorder(
+                                            borderRadius:
+                                                AppStyles.customBorder8,
+                                            borderSide: BorderSide.none),
+                                        icon: const Icon(
+                                            Icons.keyboard_arrow_down_outlined,
+                                            size: 16),
+                                        onSelected: (value) {},
+                                        itemBuilder: (BuildContext context) {
+                                          return [kPending, "Resolved"]
+                                              .map((status) {
+                                            return PopupMenuItem<String>(
+                                              value: status,
+                                              child: Row(
+                                                children: [
+                                                  Obx(() => Checkbox(
+                                                        activeColor:
+                                                            kButtonColor,
+                                                        value: controller
+                                                            .selectedStatuses
+                                                            .contains(status
+                                                                .toLowerCase()),
+                                                        onChanged:
+                                                            (bool? isChecked) {
+                                                          if (controller
+                                                              .selectedStatuses
+                                                              .contains(status
+                                                                  .toLowerCase())) {
+                                                            controller
+                                                                .selectedStatuses
+                                                                .remove(status
+                                                                    .toLowerCase());
+                                                          } else {
+                                                            controller
+                                                                .selectedStatuses
+                                                                .add(status
+                                                                    .toLowerCase());
                                                           }
+                                                          controller
+                                                              .filterReportsByStatuses();
                                                         },
                                                       )),
-                                                      Text(
-                                                        status,
-                                                        style: AppStyles.interTextStyle().copyWith(
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                  Text(
+                                                    status,
+                                                    style: AppStyles
+                                                            .interTextStyle()
+                                                        .copyWith(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
                                                   ),
-                                                );
-                                              }).toList();
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 32.h,
-                                ),
-                                Text(
-                                  "Reports",
-                                  style: AppStyles.workSansTextStyle()
-                                      .copyWith(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 24.h,
-                                ),
-                                Container(
-                                  width: width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14.r),
-                                    border: Border.all(
-                                        color: kTableBorderColor, width: 0.3),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: 49,
-                                        decoration: BoxDecoration(
-                                          color: kButtonColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(14.r),
-                                            topRight: Radius.circular(14.r),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: width,
-                                        child: DataTable(
-                                          columnSpacing: 0,
-                                          headingRowHeight: 49,
-                                          columns: [
-                                            DataColumn(
-                                              label: Flexible(
-                                                child: Text(
-                                                  "Report ID",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style:
-                                                  AppStyles.workSansTextStyle()
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                ),
+                                                ],
                                               ),
-                                            ),
-                                            DataColumn(
-                                              label: Flexible(
-                                                child: Text(
-                                                  "Content Type",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style:
-                                                  AppStyles.workSansTextStyle()
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Flexible(
-                                                child: Text(
-                                                  "Username",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style:
-                                                  AppStyles.workSansTextStyle()
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Flexible(
-                                                child: Text(
-                                                  "Reason",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style:
-                                                  AppStyles.workSansTextStyle()
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              headingRowAlignment: MainAxisAlignment.center,
-                                              label: Flexible(
-                                                child: Text(
-                                                  "Status",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style:
-                                                  AppStyles.workSansTextStyle()
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              headingRowAlignment:
-                                              MainAxisAlignment.center,
-                                              label: Flexible(
-                                                child: Text(
-                                                  "Actions",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style:
-                                                  AppStyles.workSansTextStyle()
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                          rows: controller.currentPageUsers
-                                              .map((user) => _buildDataRow(
-                                              user['id']!,
-                                              user['type']!,
-                                              user['name']!,
-                                              user['reason']!,
-                                              user['status']!,
-                                              user['statusBackColor'],
-                                              user['StatusColor'],
-                                              context))
-                                              .toList(),
-                                          dataRowMaxHeight: 65,
-                                        ),
+                                            );
+                                          }).toList();
+                                        },
                                       ),
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 51.h,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: controller.isBackButtonDisabled
-                                          ? null
-                                          : controller.goToPreviousPage,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 12),
-                                        decoration: BoxDecoration(
-                                          color: controller.isBackButtonDisabled
-                                              ? kWhiteColor
-                                              : kButtonColor,
-                                          border: Border.all(
-                                            color: controller.isBackButtonDisabled
-                                                ? kWhiteColor
-                                                : kButtonColor,
+                              ],
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            Text(
+                              "Reports",
+                              style: AppStyles.workSansTextStyle().copyWith(
+                                  fontSize: 20.sp, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 24.h,
+                            ),
+                            Obx(() => controller.isLoading.value
+                                ? SizedBox(
+                                    height: 200.w,
+                                    child: const Center(
+                                      child: CircularProgressIndicator(
+                                        color: kDarkGrey,
+                                      ),
+                                    ),
+                                  )
+                                : controller.filteredReports.isEmpty
+                                    ? SizedBox(
+                                        height: 200.w,
+                                        child: Center(
+                                          child: Text(
+                                            "No reports found",
+                                            style: AppStyles.workSansTextStyle()
+                                                .copyWith(
+                                                    fontSize: 16.sp,
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                           ),
-                                          borderRadius: BorderRadius.circular(4),
                                         ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      )
+                                    : Container(
+                                        width: width,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(14.r),
+                                          border: Border.all(
+                                              color: kTableBorderColor,
+                                              width: 0.3),
+                                        ),
+                                        child: Stack(
                                           children: [
-                                            Icon(Icons.arrow_back_ios_new_outlined,
-                                                size: 12,
-                                                color:
-                                                controller.isBackButtonDisabled
-                                                    ? kBlackColor
-                                                    : kWhiteColor),
-                                            const SizedBox(
-                                              width: 4,
+                                            Container(
+                                              height: 49,
+                                              decoration: BoxDecoration(
+                                                color: kButtonColor,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(14.r),
+                                                  topRight:
+                                                      Radius.circular(14.r),
+                                                ),
+                                              ),
                                             ),
-                                            Text(
-                                              'Back',
-                                              style: AppStyles.workSansTextStyle()
-                                                  .copyWith(
-                                                fontSize: 12,
-                                                color:
-                                                controller.isBackButtonDisabled
-                                                    ? kBlackColor
-                                                    : kWhiteColor,
+                                            SizedBox(
+                                              width: width,
+                                              child: DataTable(
+                                                columnSpacing: 0,
+                                                headingRowHeight: 49,
+                                                columns: [
+                                                  DataColumn(
+                                                    label: Flexible(
+                                                      child: Text(
+                                                        "Report ID",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                        style: AppStyles
+                                                                .workSansTextStyle()
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14.sp,
+                                                          color: kWhiteColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  DataColumn(
+                                                    label: Flexible(
+                                                      child: Text(
+                                                        "Content Type",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                        style: AppStyles
+                                                                .workSansTextStyle()
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14.sp,
+                                                          color: kWhiteColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  DataColumn(
+                                                    label: Flexible(
+                                                      child: Text(
+                                                        "Username",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                        style: AppStyles
+                                                                .workSansTextStyle()
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14.sp,
+                                                          color: kWhiteColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  DataColumn(
+                                                    label: Flexible(
+                                                      child: Text(
+                                                        "Reason",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                        style: AppStyles
+                                                                .workSansTextStyle()
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14.sp,
+                                                          color: kWhiteColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  DataColumn(
+                                                    headingRowAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    label: Flexible(
+                                                      child: Text(
+                                                        "Status",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                        style: AppStyles
+                                                                .workSansTextStyle()
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14.sp,
+                                                          color: kWhiteColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  DataColumn(
+                                                    headingRowAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    label: Flexible(
+                                                      child: Text(
+                                                        "Actions",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                        style: AppStyles
+                                                                .workSansTextStyle()
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14.sp,
+                                                          color: kWhiteColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                                rows: controller
+                                                    .currentPageUsers
+                                                    .map((report) =>
+                                                        _buildDataRow(
+                                                            report, context))
+                                                    .toList(),
+                                                dataRowMaxHeight: 65,
                                               ),
                                             ),
                                           ],
                                         ),
+                                      )),
+                            SizedBox(
+                              height: 51.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: controller.isBackButtonDisabled
+                                      ? null
+                                      : controller.goToPreviousPage,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 12),
+                                    decoration: BoxDecoration(
+                                      color: controller.isBackButtonDisabled
+                                          ? kWhiteColor
+                                          : kButtonColor,
+                                      border: Border.all(
+                                        color: controller.isBackButtonDisabled
+                                            ? kWhiteColor
+                                            : kButtonColor,
                                       ),
+                                      borderRadius: BorderRadius.circular(4),
                                     ),
-                                    SizedBox(width: 6.w,),
-                                    ...List.generate(
-                                      controller.totalPages,
-                                          (index) {
-                                        bool isSelected = index + 1 ==
-                                            controller.currentPage.value;
-                                        return GestureDetector(
-                                          onTap: () =>
-                                              controller.changePage(index + 1),
-                                          child: Padding(
-                                            padding:
-                                            AppStyles().paginationBtnPadding,
-                                            child: Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 8, horizontal: 12),
-                                              decoration: BoxDecoration(
-                                                color: isSelected
-                                                    ? kButtonColor
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.arrow_back_ios_new_outlined,
+                                            size: 12,
+                                            color:
+                                                controller.isBackButtonDisabled
+                                                    ? kBlackColor
+                                                    : kWhiteColor),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          'Back',
+                                          style: AppStyles.workSansTextStyle()
+                                              .copyWith(
+                                            fontSize: 12,
+                                            color:
+                                                controller.isBackButtonDisabled
+                                                    ? kBlackColor
                                                     : kWhiteColor,
-                                                borderRadius:
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 6.w,
+                                ),
+                                ...List.generate(
+                                  controller.totalPages,
+                                  (index) {
+                                    bool isSelected = index + 1 ==
+                                        controller.currentPage.value;
+                                    return GestureDetector(
+                                      onTap: () =>
+                                          controller.changePage(index + 1),
+                                      child: Padding(
+                                        padding:
+                                            AppStyles().paginationBtnPadding,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 12),
+                                          decoration: BoxDecoration(
+                                            color: isSelected
+                                                ? kButtonColor
+                                                : kWhiteColor,
+                                            borderRadius:
                                                 BorderRadius.circular(4),
-                                                border: Border.all(
-                                                  color: isSelected
-                                                      ? kButtonColor
-                                                      : kWhiteColor,
-                                                ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  (index + 1).toString(),
-                                                  style: AppStyles.interTextStyle()
-                                                      .copyWith(
-                                                    fontSize: 12,
-                                                    color: isSelected
-                                                        ? kWhiteColor
-                                                        : kBlackColor,
-                                                  ),
-                                                ),
+                                            border: Border.all(
+                                              color: isSelected
+                                                  ? kButtonColor
+                                                  : kWhiteColor,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              (index + 1).toString(),
+                                              style: AppStyles.interTextStyle()
+                                                  .copyWith(
+                                                fontSize: 12,
+                                                color: isSelected
+                                                    ? kWhiteColor
+                                                    : kBlackColor,
                                               ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(width: 6.w,),
-                                    GestureDetector(
-                                      onTap: controller.isNextButtonDisabled
-                                          ? null
-                                          : controller.goToNextPage,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 12),
-                                        decoration: BoxDecoration(
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                SizedBox(
+                                  width: 6.w,
+                                ),
+                                GestureDetector(
+                                  onTap: controller.isNextButtonDisabled
+                                      ? null
+                                      : controller.goToNextPage,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 12),
+                                    decoration: BoxDecoration(
+                                      color: controller.isNextButtonDisabled
+                                          ? kWhiteColor
+                                          : kButtonColor,
+                                      border: Border.all(
                                           color: controller.isNextButtonDisabled
                                               ? kWhiteColor
-                                              : kButtonColor,
-                                          border: Border.all(
-                                              color: controller.isNextButtonDisabled ? kWhiteColor : kButtonColor
-                                          ),
-                                          borderRadius: BorderRadius.circular(4),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
+                                              : kButtonColor),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Next',
-                                              style: AppStyles.workSansTextStyle()
-                                                  .copyWith(
-                                                fontSize: 12,
-                                                color:
+                                      children: [
+                                        Text(
+                                          'Next',
+                                          style: AppStyles.workSansTextStyle()
+                                              .copyWith(
+                                            fontSize: 12,
+                                            color:
                                                 controller.isNextButtonDisabled
                                                     ? kBlackColor
                                                     : kWhiteColor,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 4,
-                                            ),
-                                            Icon(Icons.arrow_forward_ios_outlined,
-                                                size: 12,
-                                                color:
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Icon(Icons.arrow_forward_ios_outlined,
+                                            size: 12,
+                                            color:
                                                 controller.isNextButtonDisabled
                                                     ? kBlackColor
                                                     : kWhiteColor),
-                                          ],
-                                        ),
-                                      ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 25.h,
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              height: 25.h,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            );
-          },
-        ));
+            ],
+          ),
+        );
+      },
+    ));
   }
 
-  DataRow _buildDataRow(String id, String type, String userName, String reason, String status,
-      Color statusColor, Color statusBackColor, context) {
-
+  DataRow _buildDataRow(ReportModel report, context) {
     return DataRow(
       color: const WidgetStatePropertyAll(kWhiteColor),
       cells: [
         DataCell(Text(
-          id,
+          report.reportId,
           textAlign: TextAlign.center,
           style: AppStyles.workSansTextStyle()
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
         )),
         DataCell(Text(
-          type,
+          report.post.contentType,
           textAlign: TextAlign.center,
           style: AppStyles.workSansTextStyle()
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
         )),
         DataCell(Text(
-          userName,
+          report.reportedBy.username,
           textAlign: TextAlign.center,
           style: AppStyles.workSansTextStyle()
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
         )),
         DataCell(Text(
-          reason,
+          report.reason,
           textAlign: TextAlign.center,
           style: AppStyles.workSansTextStyle()
               .copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
@@ -694,16 +804,20 @@ class UserReportsScreen extends GetView<UserReportsController> {
               width: 93.w,
               height: 27,
               decoration: BoxDecoration(
-                color: statusBackColor,
+                color: report.status == 'pending'
+                    ? kButtonColor.withOpacity(0.2)
+                    : kGreenColor.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(5.r),
               ),
               child: Center(
                 child: Text(
-                  status,
+                  report.status,
                   style: AppStyles.workSansTextStyle().copyWith(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w700,
-                      color: statusColor),
+                      color: report.status == 'pending'
+                          ? kButtonColor
+                          : kGreenColor),
                 ),
               ),
             ),
@@ -773,7 +887,9 @@ class UserReportsScreen extends GetView<UserReportsController> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return PostDetailDialog(isReportPage: true,);
+                              return PostDetailDialog(
+                                isReportPage: true,
+                              );
                             },
                           );
                         },
@@ -793,5 +909,4 @@ class UserReportsScreen extends GetView<UserReportsController> {
       ],
     );
   }
-
 }
