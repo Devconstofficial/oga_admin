@@ -16,6 +16,8 @@ class UserReportsController extends GetxController {
   var selectedStatuses = <String>{}.obs;
   var isUpdating = false.obs;
   var isLoading = false.obs;
+  var isDeleting = false.obs;
+  var isBlocking = false.obs;
   Rx<UserModel?> user = Rx<UserModel?>(null);
 
   final RxList<ReportModel> allReports = <ReportModel>[].obs;
@@ -25,7 +27,6 @@ class UserReportsController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
     getReports();
     getUserData();
   }
@@ -67,6 +68,65 @@ class UserReportsController extends GetxController {
     }
   }
 
+  void deleteUser({required String id}) async {
+    try {
+      isDeleting(true);
+      var result = await _service.deleteReport(id: id);
+      if (result is bool) {
+        isDeleting(false);
+        Get.back();
+        getReports();
+        showCustomSnackbar(
+          "Success",
+          "Deleted successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        isDeleting(false);
+        showCustomSnackbar(
+          "Error",
+          result.toString(),
+        );
+      }
+    } catch (e) {
+      isDeleting(false);
+      showCustomSnackbar(
+        "Error",
+        e.toString(),
+      );
+    }
+  }
+
+  void blockPost({required String id}) async {
+    try {
+      isBlocking(true);
+      var result = await _service.blockPost(id: id);
+      if (result is bool) {
+        isBlocking(false);
+        Get.back();
+        showCustomSnackbar(
+          "Success",
+          "Blocked successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        isBlocking(false);
+        showCustomSnackbar(
+          "Error",
+          result.toString(),
+        );
+      }
+    } catch (e) {
+      isBlocking(false);
+      showCustomSnackbar(
+        "Error",
+        e.toString(),
+      );
+    }
+  }
+
   void updateUser({required String id}) async {
     try {
       isUpdating(true);
@@ -77,7 +137,7 @@ class UserReportsController extends GetxController {
       if (result is bool) {
         isUpdating(false);
         Get.back();
-        // getUsers();
+        getReports();
         showCustomSnackbar(
           "Success",
           "Updated successfully",

@@ -30,6 +30,7 @@ class ReportService {
         'Authorization': 'Baerer $token'
       },
     );
+    log("token----------$token");
     log("response----------$responseModel");
     if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
       return (responseModel.data["data"]["reports"] as List)
@@ -65,6 +66,42 @@ class ReportService {
       'PUT',
       url: "${WebUrls.kEditReportUrl}/$id",
       requestBody: body,
+      requestHeader: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Baerer $token'
+      },
+    );
+
+    if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
+      return true;
+    }
+    return responseModel.data["message"] ?? responseModel.statusDescription;
+  }
+
+  Future<dynamic> deleteReport({required String id}) async {
+    final token = await _sessionManagement.getSessionToken(
+        tokenKey: SessionTokenKeys.kUserTokenKey);
+    ResponseModel responseModel = await _client.customRequest(
+      'DELETE',
+      url: "${WebUrls.kDeleteReportUrl}/$id",
+      requestHeader: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Baerer $token'
+      },
+    );
+
+    if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
+      return true;
+    }
+    return responseModel.data["message"] ?? responseModel.statusDescription;
+  }
+
+  Future<dynamic> blockPost({required String id}) async {
+    final token = await _sessionManagement.getSessionToken(
+        tokenKey: SessionTokenKeys.kUserTokenKey);
+    ResponseModel responseModel = await _client.customRequest(
+      'POST',
+      url: "${WebUrls.kBlockPostUrl}/$id/block",
       requestHeader: {
         'Content-Type': 'application/json',
         'Authorization': 'Baerer $token'

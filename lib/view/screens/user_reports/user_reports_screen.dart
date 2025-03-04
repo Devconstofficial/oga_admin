@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
 import 'package:oga_admin/models/report_model.dart';
+import 'package:oga_admin/models/user_model.dart';
 import 'package:oga_admin/view/widgets/delete_dialog.dart';
 import 'package:oga_admin/view/widgets/profile_dialog.dart';
 import '../../../utils/app_colors.dart';
@@ -19,7 +20,7 @@ import 'controller/user_report_controller.dart';
 class UserReportsScreen extends GetView<UserReportsController> {
   const UserReportsScreen({super.key});
 
-  Widget statusUpdateDialogue(BuildContext context) {
+  Widget statusUpdateDialogue(String reportId, BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
     return Dialog(
@@ -129,15 +130,24 @@ class UserReportsScreen extends GetView<UserReportsController> {
                     borderColor: kGray3Color,
                     fontSize: 14,
                   ),
-                  CustomButton(
-                    text: "Update Status",
-                    height: 40,
-                    onTap: () {
-                      Get.back();
-                    },
-                    width: 120,
-                    fontSize: 14,
-                  ),
+                  Obx(() => controller.isUpdating.value
+                      ? SizedBox(
+                          width: 130.w,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: kDarkGrey,
+                            ),
+                          ),
+                        )
+                      : CustomButton(
+                          text: "Update Status",
+                          height: 40,
+                          onTap: () {
+                            controller.updateUser(id: reportId);
+                          },
+                          width: 130,
+                          fontSize: 14,
+                        )),
                 ],
               )
             ],
@@ -843,7 +853,8 @@ class UserReportsScreen extends GetView<UserReportsController> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return statusUpdateDialogue(context);
+                              return statusUpdateDialogue(
+                                  report.reportId, context);
                             },
                           );
                         },
@@ -865,7 +876,11 @@ class UserReportsScreen extends GetView<UserReportsController> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return DeleteDialog();
+                              return DeleteDialog(
+                                onDelete: () {
+                                  controller.deleteUser(id: report.reportId);
+                                },
+                              );
                             },
                           );
                         },
@@ -889,6 +904,12 @@ class UserReportsScreen extends GetView<UserReportsController> {
                             builder: (BuildContext context) {
                               return PostDetailDialog(
                                 isReportPage: true,
+                                userData: UserModel.empty(),
+                                reportData: report,
+                                isLoading: controller.isBlocking,
+                                onTap: () {
+                                  controller.blockPost(id: report.post.postId);
+                                },
                               );
                             },
                           );

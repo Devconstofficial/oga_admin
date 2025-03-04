@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:oga_admin/models/response_model.dart';
 import 'package:oga_admin/models/user_model.dart';
 import 'package:oga_admin/services/http_client_request.dart';
@@ -71,6 +73,30 @@ class UserService {
 
     if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
       return true;
+    }
+    return responseModel.data["message"] ?? responseModel.statusDescription;
+  }
+
+  Future<dynamic> updateProfile({required Map<String, dynamic> body}) async {
+    final token = await _sessionManagement.getSessionToken(
+        tokenKey: SessionTokenKeys.kUserTokenKey);
+    ResponseModel responseModel = await _client.customRequest(
+      'PATCH',
+      url: WebUrls.kUpdateProfileUrl,
+      requestBody: body,
+      requestHeader: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Baerer $token'
+      },
+    );
+
+    if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
+      await _sessionManagement.saveSession(
+        tokenKey: SessionTokenKeys.kUserModelKey,
+        tokenValue: jsonEncode(responseModel.data["data"]["data"]),
+      );
+
+      return UserModel.fromJson(responseModel.data["data"]["data"]);
     }
     return responseModel.data["message"] ?? responseModel.statusDescription;
   }

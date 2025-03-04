@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
+import 'package:intl/intl.dart';
+import 'package:oga_admin/models/report_model.dart';
 import 'package:oga_admin/models/user_model.dart';
-import 'package:oga_admin/view/screens/dashoboard_screen/controller/dashboard_controller.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_images.dart';
-import '../../utils/app_strings.dart';
 import '../../utils/app_styles.dart';
 import 'custom_button.dart';
 
@@ -15,17 +15,44 @@ import 'custom_button.dart';
 class PostDetailDialog extends StatefulWidget {
   bool? isReportPage;
   UserModel? userData;
-  PostDetailDialog({super.key, this.isReportPage, this.userData});
+  ReportModel? reportData;
+  final Function() onTap;
+  RxBool? isLoading;
+  PostDetailDialog(
+      {super.key,
+      this.isReportPage,
+      this.userData,
+      this.reportData,
+      required this.onTap,
+      this.isLoading});
 
   @override
   PostDetailDialogState createState() => PostDetailDialogState();
 }
 
 class PostDetailDialogState extends State<PostDetailDialog> {
-  DashboardController controller = DashboardController();
-
   @override
   Widget build(BuildContext context) {
+    String formattedDate = "";
+    String formattedTime = "";
+
+    if (widget.isReportPage == true && widget.reportData != null) {
+      String dateString = widget.reportData!.post.createdAt;
+      DateTime dateTime = DateTime.parse(dateString);
+      formattedDate = DateFormat("M/d/yy").format(dateTime);
+      formattedTime = DateFormat("hh:mm a").format(dateTime);
+    }
+
+    String formatLikes(int likes) {
+      if (likes >= 1000000) {
+        return "${(likes / 1000000).toStringAsFixed(1)}M";
+      } else if (likes >= 1000) {
+        return "${(likes / 1000).toStringAsFixed(1)}k";
+      } else {
+        return likes.toString();
+      }
+    }
+
     return Dialog(
         backgroundColor: kBackColor,
         shape: RoundedRectangleBorder(
@@ -51,7 +78,7 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                     children: [
                       Text(
                           widget.isReportPage == true
-                              ? "@karennne Post"
+                              ? "@${widget.reportData!.reportedBy.username} Post"
                               : "General Info",
                           style: AppStyles.poppinsTextStyle().copyWith(
                               fontWeight: FontWeight.w600,
@@ -87,7 +114,7 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                                       ? "Post Content: "
                                       : "Name: ",
                                   style: AppStyles.poppinsTextStyle().copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                       fontSize: 16,
                                       color: kBlackColor2)),
                               Expanded(
@@ -95,7 +122,7 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                                       softWrap: true,
                                       overflow: TextOverflow.visible,
                                       widget.isReportPage == true
-                                          ? kComment
+                                          ? widget.reportData!.post.content
                                           : widget.userData!.name,
                                       style: AppStyles.poppinsTextStyle()
                                           .copyWith(
@@ -114,12 +141,12 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                                       ? "Post Date: "
                                       : "Email: ",
                                   style: AppStyles.poppinsTextStyle().copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                       fontSize: 16,
                                       color: kBlackColor2)),
                               Text(
                                   widget.isReportPage == true
-                                      ? "2/21/20"
+                                      ? formattedDate
                                       : widget.userData!.email,
                                   style: AppStyles.poppinsTextStyle().copyWith(
                                       fontWeight: FontWeight.w400,
@@ -137,12 +164,12 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                                       ? "Post Time: "
                                       : "Location: ",
                                   style: AppStyles.poppinsTextStyle().copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                       fontSize: 16,
                                       color: kBlackColor2)),
                               Text(
                                   widget.isReportPage == true
-                                      ? "09:28 AM"
+                                      ? formattedTime
                                       : widget.userData!.location,
                                   style: AppStyles.poppinsTextStyle().copyWith(
                                       fontWeight: FontWeight.w400,
@@ -160,12 +187,12 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                                       ? "Post Type: "
                                       : "Contact: ",
                                   style: AppStyles.poppinsTextStyle().copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                       fontSize: 16,
                                       color: kBlackColor2)),
                               Text(
                                   widget.isReportPage == true
-                                      ? "Comedy, Book"
+                                      ? widget.reportData!.post.tags.join(', ')
                                       : widget.userData!.phoneNumber,
                                   style: AppStyles.poppinsTextStyle().copyWith(
                                       fontWeight: FontWeight.w400,
@@ -183,12 +210,13 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                                       ? "Reaction: "
                                       : "Profile Visibility: ",
                                   style: AppStyles.poppinsTextStyle().copyWith(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                       fontSize: 16,
                                       color: kBlackColor2)),
                               Text(
                                   widget.isReportPage == true
-                                      ? "11k"
+                                      ? formatLikes(
+                                          widget.reportData!.post.likes.length)
                                       : widget.userData!.visibility,
                                   style: AppStyles.poppinsTextStyle().copyWith(
                                       fontWeight: FontWeight.w400,
@@ -216,7 +244,9 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                         child: ClipRRect(
                           borderRadius: AppStyles.customBorderAll100,
                           child: ImageNetwork(
-                            image: widget.userData!.profilePicture,
+                            image: widget.isReportPage == true
+                                ? widget.reportData!.post.link
+                                : widget.userData!.profilePicture,
                             width: 126,
                             height: 126,
                             duration: 1500,
@@ -239,6 +269,28 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                   color: kLightGreyColor.withOpacity(0.4),
                   thickness: 0.4,
                 ),
+                if (widget.isReportPage == true) ...[
+                  SizedBox(height: 24.h),
+                  Row(
+                    children: [
+                      Text("Report Detail: ",
+                          style: AppStyles.poppinsTextStyle().copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: kBlackColor2)),
+                      Text(widget.reportData!.reason,
+                          style: AppStyles.poppinsTextStyle().copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: kBlackColor2)),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  Divider(
+                    color: kLightGreyColor.withOpacity(0.4),
+                    thickness: 0.4,
+                  ),
+                ],
                 SizedBox(height: 24.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -255,9 +307,9 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                       textColor: kBlackColor1,
                       fontSize: 14,
                     ),
-                    Obx(() => controller.isDeleting.value
+                    Obx(() => widget.isLoading!.value == true
                         ? SizedBox(
-                            width: 106.w,
+                            width: 112.w,
                             child: const Center(
                               child: CircularProgressIndicator(
                                 color: kDarkGrey,
@@ -266,18 +318,22 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                           )
                         : CustomButton(
                             text: widget.isReportPage == true
-                                ? "Block User"
+                                ? widget.reportData!.post.status == 'blocked'
+                                    ? "Blocked"
+                                    : "Block Post"
                                 : "Delete User",
                             height: 40,
-                            onTap: () {
-                              if (widget.isReportPage == false) {
-                                controller.deleteUser(
-                                    id: widget.userData!.userId);
-                              }
-                            },
+                            onTap: widget.reportData!.post.status != 'blocked'
+                                ? widget.onTap
+                                : () {},
                             width: 112,
-                            borderColor: kButtonColor,
-                            color: kButtonColor,
+                            borderColor:
+                                widget.reportData!.post.status == 'blocked'
+                                    ? kRedColor
+                                    : kButtonColor,
+                            color: widget.reportData!.post.status == 'blocked'
+                                ? kRedColor
+                                : kButtonColor,
                             textColor: kWhiteColor,
                             fontSize: 14,
                           )),

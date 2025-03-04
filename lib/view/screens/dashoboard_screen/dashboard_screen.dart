@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
+import 'package:oga_admin/models/report_model.dart';
 import 'package:oga_admin/models/user_model.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_images.dart';
@@ -142,7 +143,6 @@ class DashboardScreen extends GetView<DashboardController> {
                           height: 40,
                           onTap: () {
                             controller.updateUser(id: id);
-                            Get.back();
                           },
                           width: 130,
                           fontSize: 14,
@@ -902,7 +902,9 @@ class DashboardScreen extends GetView<DashboardController> {
                             context: context,
                             builder: (BuildContext context) {
                               return DeleteDialog(
-                                userId: user.userId,
+                                onDelete: () {
+                                  controller.deleteUser(id: user.userId);
+                                },
                               );
                             },
                           );
@@ -928,6 +930,18 @@ class DashboardScreen extends GetView<DashboardController> {
                               return PostDetailDialog(
                                 isReportPage: false,
                                 userData: user,
+                                reportData: ReportModel.empty(),
+                                onTap: () {
+                                  Get.back();
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return DeleteDialog(onDelete: () {
+                                          controller.deleteUser(
+                                              id: user.userId);
+                                        });
+                                      });
+                                },
                               );
                             },
                           );

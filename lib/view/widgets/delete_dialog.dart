@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:oga_admin/view/screens/dashoboard_screen/controller/dashboard_controller.dart';
+import 'package:oga_admin/view/screens/user_reports/controller/user_report_controller.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_images.dart';
 import '../../utils/app_strings.dart';
@@ -10,10 +11,10 @@ import '../../utils/app_styles.dart';
 import 'custom_button.dart';
 
 class DeleteDialog extends StatefulWidget {
-  final String? userId;
-  DeleteDialog({
+  final void Function() onDelete;
+  const DeleteDialog({
     super.key,
-    this.userId,
+    required this.onDelete,
   });
 
   @override
@@ -22,6 +23,7 @@ class DeleteDialog extends StatefulWidget {
 
 class DeleteDialogState extends State<DeleteDialog> {
   final DashboardController controller = Get.find();
+  final UserReportsController userReportsController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -104,7 +106,8 @@ class DeleteDialogState extends State<DeleteDialog> {
                     const SizedBox(
                       width: 13,
                     ),
-                    Obx(() => controller.isDeleting.value
+                    Obx(() => controller.isDeleting.value ||
+                            userReportsController.isDeleting.value
                         ? SizedBox(
                             width: 75.w,
                             child: const Center(
@@ -116,10 +119,7 @@ class DeleteDialogState extends State<DeleteDialog> {
                         : CustomButton(
                             text: "Delete",
                             height: 40,
-                            onTap: () {
-                              controller.deleteUser(id: widget.userId!);
-                              //  Get.back();
-                            },
+                            onTap: widget.onDelete,
                             width: 75,
                             borderColor: kButtonColor,
                             color: kButtonColor,

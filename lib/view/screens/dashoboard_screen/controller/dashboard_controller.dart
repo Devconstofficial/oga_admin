@@ -19,6 +19,7 @@ class DashboardController extends GetxController {
   var isLoading = false.obs;
   var isDeleting = false.obs;
   var isUpdating = false.obs;
+  var isUpdatingProfile = false.obs;
   var totalUsers = 0.obs;
   RxList<UserModel> filteredUsers = <UserModel>[].obs;
   RxList<UserModel> allUsers = <UserModel>[].obs;
@@ -137,6 +138,38 @@ class DashboardController extends GetxController {
       }
     } catch (e) {
       isUpdating(false);
+      showCustomSnackbar(
+        "Error",
+        e.toString(),
+      );
+    }
+  }
+
+  void updateUserProfile({required String name}) async {
+    try {
+      isUpdatingProfile(true);
+      var result = await _service.updateProfile(
+        body: {"name": name},
+      );
+      if (result is UserModel) {
+        isUpdatingProfile(false);
+        Get.back();
+        getUserData();
+        showCustomSnackbar(
+          "Success",
+          "Profile Updated successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        isUpdatingProfile(false);
+        showCustomSnackbar(
+          "Error",
+          result.toString(),
+        );
+      }
+    } catch (e) {
+      isUpdatingProfile(false);
       showCustomSnackbar(
         "Error",
         e.toString(),

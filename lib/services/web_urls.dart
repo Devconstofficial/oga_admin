@@ -16,6 +16,10 @@ class WebUrls extends _BaseUrl {
   static const String kSpecificReportUrl =
       "${_BaseUrl._kBaseUrl}/admin/reports";
   static const String kBanUserUrl = "${_BaseUrl._kBaseUrl}/admin/users";
+  static const String kDeleteReportUrl = "${_BaseUrl._kBaseUrl}/admin/reports";
+  static const String kBlockPostUrl = "${_BaseUrl._kBaseUrl}/admin/posts";
+  static const String kUpdateProfileUrl =
+      "${_BaseUrl._kBaseUrl}/user/user/updateProfile";
 }
 
 abstract class _BaseUrl {
