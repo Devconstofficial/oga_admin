@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oga_admin/models/user_model.dart';
@@ -13,6 +14,7 @@ import 'package:oga_admin/utils/session_management/session_token_keys.dart';
 class DashboardController extends GetxController {
   final UserService _service = UserService();
   final SessionManagement _sessionManagement = SessionManagement();
+  static final FirebaseStorage _storage = FirebaseStorage.instance;
   var selectedUserStatus = ''.obs;
   var selectedStatuses = <String>{}.obs;
   Rx<Uint8List?> selectedImage = Rx<Uint8List?>(null);
@@ -146,26 +148,49 @@ class DashboardController extends GetxController {
   }
 
   void updateUserProfile({required String name}) async {
+    String url = user.value!.profilePicture;
     try {
       isUpdatingProfile(true);
-      var result = await _service.updateProfile(
-        body: {"name": name},
-      );
-      if (result is UserModel) {
-        isUpdatingProfile(false);
-        Get.back();
-        getUserData();
-        showCustomSnackbar(
-          "Success",
-          "Profile Updated successfully",
-          backgroundColor: Colors.green,
+      if (selectedImage.value != null) {
+        String filePath =
+            'user_images/${DateTime.now().millisecondsSinceEpoch}_profile.png';
+
+        UploadTask uploadTask;
+
+        uploadTask = _storage.ref(filePath).putData(selectedImage.value!);
+
+        // Wait for the upload to complete
+        TaskSnapshot snapshot = await uploadTask;
+
+        // Get the download URL after the upload is complete
+        url = await snapshot.ref.getDownloadURL();
+      }
+      try {
+        var result = await _service.updateProfile(
+          body: {"name": name, "profilePicture": url},
         );
-        return;
-      } else {
+        if (result is UserModel) {
+          isUpdatingProfile(false);
+          Get.back();
+          getUserData();
+          showCustomSnackbar(
+            "Success",
+            "Profile Updated successfully",
+            backgroundColor: Colors.green,
+          );
+          return;
+        } else {
+          isUpdatingProfile(false);
+          showCustomSnackbar(
+            "Error",
+            result.toString(),
+          );
+        }
+      } catch (e) {
         isUpdatingProfile(false);
         showCustomSnackbar(
           "Error",
-          result.toString(),
+          e.toString(),
         );
       }
     } catch (e) {

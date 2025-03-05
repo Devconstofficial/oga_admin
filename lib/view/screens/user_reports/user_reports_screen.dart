@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
 import 'package:oga_admin/models/report_model.dart';
 import 'package:oga_admin/models/user_model.dart';
+import 'package:oga_admin/view/screens/dashoboard_screen/controller/dashboard_controller.dart';
 import 'package:oga_admin/view/widgets/delete_dialog.dart';
 import 'package:oga_admin/view/widgets/profile_dialog.dart';
 import '../../../utils/app_colors.dart';
@@ -18,7 +19,8 @@ import '../../widgets/post_detail_dialog.dart';
 import 'controller/user_report_controller.dart';
 
 class UserReportsScreen extends GetView<UserReportsController> {
-  const UserReportsScreen({super.key});
+  final DashboardController dashboardController = Get.find();
+  UserReportsScreen({super.key});
 
   Widget statusUpdateDialogue(String reportId, BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -213,17 +215,20 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                     width: 60,
                                     child: ClipRRect(
                                       borderRadius: AppStyles.customBorder16,
-                                      child: controller.user.value == null
+                                      child: dashboardController.user.value ==
+                                              null
                                           ? const Center(
                                               child: CircularProgressIndicator(
                                                 color: kWhiteColor,
                                               ),
                                             )
-                                          : controller.user.value!
+                                          : dashboardController.user.value!
                                                   .profilePicture.isEmpty
                                               ? Image.asset(kUserImage)
                                               : ImageNetwork(
-                                                  image: controller.user.value!
+                                                  image: dashboardController
+                                                      .user
+                                                      .value!
                                                       .profilePicture,
                                                   width: 60,
                                                   height: 60,
@@ -253,9 +258,10 @@ class UserReportsScreen extends GetView<UserReportsController> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Obx(() => Text(
-                                        controller.user.value == null
+                                        dashboardController.user.value == null
                                             ? ""
-                                            : controller.user.value!.name,
+                                            : dashboardController
+                                                .user.value!.name,
                                         style: AppStyles.workSansTextStyle()
                                             .copyWith(
                                                 fontSize: 14.sp,

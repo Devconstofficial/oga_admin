@@ -1,16 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oga_admin/models/report_model.dart';
-import 'package:oga_admin/models/user_model.dart';
 import 'package:oga_admin/services/report_service.dart';
 import 'package:oga_admin/utils/custom_snackbar.dart';
-import 'package:oga_admin/utils/session_management/session_management.dart';
-import 'package:oga_admin/utils/session_management/session_token_keys.dart';
 
 class UserReportsController extends GetxController {
   final ReportService _service = ReportService();
-  final SessionManagement _sessionManagement = SessionManagement();
   var selectedReportStatus = ''.obs;
 
   var selectedStatuses = <String>{}.obs;
@@ -18,7 +13,6 @@ class UserReportsController extends GetxController {
   var isLoading = false.obs;
   var isDeleting = false.obs;
   var isBlocking = false.obs;
-  Rx<UserModel?> user = Rx<UserModel?>(null);
 
   final RxList<ReportModel> allReports = <ReportModel>[].obs;
   final RxList<ReportModel> filteredReports = <ReportModel>[].obs;
@@ -28,19 +22,6 @@ class UserReportsController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getReports();
-    getUserData();
-  }
-
-  Future<void> getUserData() async {
-    String userJson = await _sessionManagement.getSessionToken(
-      tokenKey: SessionTokenKeys.kUserModelKey,
-    );
-
-    if (userJson.isNotEmpty) {
-      user.value = UserModel.fromJson(jsonDecode(userJson));
-    } else {
-      user.value = null;
-    }
   }
 
   void getReports() async {
