@@ -12,15 +12,11 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'controller/auth_controller.dart';
 import 'package:otp_text_field/otp_field.dart';
 
-
 class VerifyOtpScreen extends GetView<AuthController> {
   const VerifyOtpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.width;
-    double width = MediaQuery.of(context).size.width;
-
     return GestureDetector(
         onTap: () {
           CommonCode.unFocus(context);
@@ -36,43 +32,78 @@ class VerifyOtpScreen extends GetView<AuthController> {
                       width: 505,
                       child: Column(
                         children: [
-                          SizedBox(height: 80.h,),
+                          SizedBox(
+                            height: 80.h,
+                          ),
                           Center(
                             child: SizedBox(
                               height: 150.h,
                               width: 226.w,
-                              child: Image.asset(kLogo,fit: BoxFit.cover,),
+                              child: Image.asset(
+                                kLogo,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 37.h,),
-                          Text(kConfirmOTP,
-                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w600,fontSize: 40.sp,color: kBlackColor),textAlign: TextAlign.center,),
-                          const SizedBox(height: 2,),
-                          Text(kConfirmOTPDetail,
-                            style: AppStyles.poppinsTextStyle().copyWith(fontWeight: FontWeight.w400,fontSize: 16.sp,color: kDarkGrey),textAlign: TextAlign.center,),
-                          SizedBox(height: 44.h,),
+                          SizedBox(
+                            height: 37.h,
+                          ),
+                          Text(
+                            kConfirmOTP,
+                            style: AppStyles.poppinsTextStyle().copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 40.sp,
+                                color: kBlackColor),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            kConfirmOTPDetail,
+                            style: AppStyles.poppinsTextStyle().copyWith(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16.sp,
+                                color: kDarkGrey),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 44.h,
+                          ),
                           OTPTextField(
                             // controller: controller.otpController,
                             length: 5,
                             width: MediaQuery.of(context).size.width,
                             textFieldAlignment: MainAxisAlignment.spaceAround,
                             fieldWidth: 56,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                            otpFieldStyle: OtpFieldStyle(focusBorderColor: kPrimaryColor,),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 10),
+                            otpFieldStyle: OtpFieldStyle(
+                              focusBorderColor: kPrimaryColor,
+                            ),
                             fieldStyle: FieldStyle.underline,
                             outlineBorderRadius: 10.r,
-                            style: const TextStyle(fontSize: 24,fontWeight: FontWeight.w700),
-                            onChanged: (pin){
-
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w700),
+                            onChanged: (pin) {
+                              controller.otp.value = pin;
                             },
-                            onCompleted: (pin) async {
-
-                            },
+                            onCompleted: (pin) async {},
                           ),
-                          SizedBox(height: 32.h,),
-                          CustomButton(text: kVerifyOTP, height: 68.h, onTap: (){
-                            Get.toNamed(kChangePassScreenRoute);
-                          }),
+                          SizedBox(
+                            height: 32.h,
+                          ),
+                          Obx(() => controller.isLoading.value
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                  color: kDarkGrey,
+                                ))
+                              : CustomButton(
+                                  text: kVerifyOTP,
+                                  height: 68.h,
+                                  onTap: () {
+                                    controller.verifyOtp();
+                                  })),
                         ],
                       ),
                     ),
@@ -81,8 +112,6 @@ class VerifyOtpScreen extends GetView<AuthController> {
               ),
             ),
           ),
-        )
-    );
+        ));
   }
 }
-

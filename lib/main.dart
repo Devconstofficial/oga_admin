@@ -1,14 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:oga_admin/firebase_options.dart';
 import 'package:oga_admin/utils/app_styles.dart';
 import 'package:oga_admin/utils/route_generator.dart';
 import 'utils/app_strings.dart';
 import 'utils/screen_bindings.dart';
 import '../../../utils/app_colors.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-void main() async{
   runApp(const MyApp());
 }
 
@@ -31,7 +37,10 @@ class MyApp extends StatelessWidget {
         iconTheme: IconThemeData(color: kDarkGrey),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: AppStyles.poppinsTextStyle().copyWith(fontSize: 16,color: kSecondaryColor,),
+        hintStyle: AppStyles.poppinsTextStyle().copyWith(
+          fontSize: 16,
+          color: kSecondaryColor,
+        ),
         prefixIconColor: kPrimaryColor,
         contentPadding: AppStyles().contentPadding,
         fillColor: kWhiteColor,
@@ -39,16 +48,16 @@ class MyApp extends StatelessWidget {
         iconColor: kPrimaryColor,
         hoverColor: kWhiteColor,
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryColor,width: 1.w),
+          borderSide: BorderSide(color: kPrimaryColor, width: 1.w),
           borderRadius: AppStyles.customBorderAll,
         ),
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: kRedColor,width: 1.w),
+          borderSide: BorderSide(color: kRedColor, width: 1.w),
           borderRadius: AppStyles.customBorderAll,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppStyles.customBorderAll,
-          borderSide: BorderSide(color: kPrimaryColor,width: 1.w),
+          borderSide: BorderSide(color: kPrimaryColor, width: 1.w),
         ),
       ),
       textTheme: const TextTheme(
@@ -77,9 +86,9 @@ class MyApp extends StatelessWidget {
             builder: (context, child) {
               return MediaQuery(
                   data: MediaQuery.of(context).copyWith(
-                      textScaleFactor: MediaQuery.of(context)
+                      textScaler: TextScaler.linear(MediaQuery.of(context)
                           .textScaleFactor
-                          .clamp(1.0, 1.0)),
+                          .clamp(1.0, 1.0))),
                   child: child!);
             });
       },
