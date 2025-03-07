@@ -931,6 +931,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                 isReportPage: false,
                                 userData: user,
                                 reportData: ReportModel.empty(),
+                                isLoading: false.obs,
                                 onTap: () {
                                   Get.back();
                                   showDialog(

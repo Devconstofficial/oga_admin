@@ -72,7 +72,7 @@ class VerifyOtpScreen extends GetView<AuthController> {
                           ),
                           OTPTextField(
                             // controller: controller.otpController,
-                            length: 5,
+                            length: 4,
                             width: MediaQuery.of(context).size.width,
                             textFieldAlignment: MainAxisAlignment.spaceAround,
                             fieldWidth: 56,

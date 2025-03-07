@@ -316,27 +316,39 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                               ),
                             ),
                           )
-                        : CustomButton(
-                            text: widget.isReportPage == true
-                                ? widget.reportData!.post.status == 'blocked'
-                                    ? "Blocked"
-                                    : "Block Post"
-                                : "Delete User",
-                            height: 40,
-                            onTap: widget.reportData!.post.status != 'blocked'
-                                ? widget.onTap
-                                : () {},
-                            width: 112,
-                            borderColor:
-                                widget.reportData!.post.status == 'blocked'
-                                    ? kRedColor
-                                    : kButtonColor,
-                            color: widget.reportData!.post.status == 'blocked'
-                                ? kRedColor
-                                : kButtonColor,
-                            textColor: kWhiteColor,
-                            fontSize: 14,
-                          )),
+                        : widget.isReportPage == true
+                            ? CustomButton(
+                                text:
+                                    widget.reportData!.post.status == 'blocked'
+                                        ? "Blocked"
+                                        : "Block Post",
+                                height: 40,
+                                onTap:
+                                    widget.reportData!.post.status != 'blocked'
+                                        ? widget.onTap
+                                        : () {},
+                                width: 112,
+                                borderColor:
+                                    widget.reportData!.post.status == 'blocked'
+                                        ? kRedColor
+                                        : kButtonColor,
+                                color:
+                                    widget.reportData!.post.status == 'blocked'
+                                        ? kRedColor
+                                        : kButtonColor,
+                                textColor: kWhiteColor,
+                                fontSize: 14,
+                              )
+                            : CustomButton(
+                                text: "Delete User",
+                                height: 40,
+                                onTap: widget.onTap,
+                                width: 112,
+                                borderColor: kButtonColor,
+                                color: kButtonColor,
+                                textColor: kWhiteColor,
+                                fontSize: 14,
+                              )),
                   ],
                 ),
               ],
