@@ -23,5 +23,5 @@ class WebUrls extends _BaseUrl {
 }
 
 abstract class _BaseUrl {
-  static const String _kBaseUrl = 'http://54.158.166.129:8000';
+  static const String _kBaseUrl = 'https://backend.oga.social';
 }
