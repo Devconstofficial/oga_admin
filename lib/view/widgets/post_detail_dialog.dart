@@ -6,6 +6,7 @@ import 'package:image_network/image_network.dart';
 import 'package:intl/intl.dart';
 import 'package:oga_admin/models/report_model.dart';
 import 'package:oga_admin/models/user_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_images.dart';
 import '../../utils/app_styles.dart';
@@ -234,34 +235,33 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                     const SizedBox(
                       width: 30,
                     ),
-                    Container(
-                        height: 126,
-                        width: 126,
-                        decoration: BoxDecoration(
-                          color: kLightGreyColor.withOpacity(0.5),
-                          borderRadius: AppStyles.customBorderAll100,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: AppStyles.customBorderAll100,
-                          child: ImageNetwork(
-                            image: widget.isReportPage == true
-                                ? widget.reportData!.post.link
-                                : widget.userData!.profilePicture,
-                            width: 126,
-                            height: 126,
-                            duration: 1500,
-                            curve: Curves.easeIn,
-                            onPointer: true,
-                            debugPrint: false,
-                            fitAndroidIos: BoxFit.cover,
-                            fitWeb: BoxFitWeb.cover,
-                            onError: Icon(Icons.broken_image,
-                                size: 40.sp, color: kDarkGrey),
-                            onLoading: const CircularProgressIndicator(
-                              color: kDarkGrey,
-                            ),
+                    if (widget.isReportPage == false)
+                      Container(
+                          height: 126,
+                          width: 126,
+                          decoration: BoxDecoration(
+                            color: kLightGreyColor.withOpacity(0.5),
+                            borderRadius: AppStyles.customBorderAll100,
                           ),
-                        ))
+                          child: ClipRRect(
+                            borderRadius: AppStyles.customBorderAll100,
+                            child: ImageNetwork(
+                              image: widget.userData!.profilePicture,
+                              width: 126,
+                              height: 126,
+                              duration: 1500,
+                              curve: Curves.easeIn,
+                              onPointer: true,
+                              debugPrint: false,
+                              fitAndroidIos: BoxFit.cover,
+                              fitWeb: BoxFitWeb.cover,
+                              onError: Icon(Icons.broken_image,
+                                  size: 40.sp, color: kDarkGrey),
+                              onLoading: const CircularProgressIndicator(
+                                color: kDarkGrey,
+                              ),
+                            ),
+                          ))
                   ],
                 ),
                 SizedBox(height: 24.h),
@@ -271,6 +271,21 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                 ),
                 if (widget.isReportPage == true) ...[
                   SizedBox(height: 24.h),
+                  Row(
+                    children: [
+                      Text("Report title: ",
+                          style: AppStyles.poppinsTextStyle().copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: kBlackColor2)),
+                      Text(widget.reportData!.reason,
+                          style: AppStyles.poppinsTextStyle().copyWith(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: kBlackColor2)),
+                    ],
+                  ),
+                  SizedBox(height: 10.h),
                   Row(
                     children: [
                       Text("Report Detail: ",
@@ -283,6 +298,39 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
                               color: kBlackColor2)),
+                    ],
+                  ),
+                  SizedBox(height: 10.h),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Link:  ",
+                          style: AppStyles.poppinsTextStyle().copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                              color: kBlackColor2)),
+                      SizedBox(
+                        width: 500,
+                        child: GestureDetector(
+                          onTap: () async {
+                            final Uri url =
+                                Uri.parse(widget.reportData!.post.link);
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url,
+                                  mode: LaunchMode.externalApplication);
+                            } else {
+                              debugPrint('Could not launch $url');
+                            }
+                          },
+                          child: Text(widget.reportData!.post.link,
+                              maxLines: 2,
+                              style: AppStyles.poppinsTextStyle().copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 15,
+                                  color: kBlackColor2)),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 24.h),

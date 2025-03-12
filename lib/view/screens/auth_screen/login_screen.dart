@@ -45,31 +45,6 @@ class LoginScreen extends GetView<AuthController> {
                             ),
                           ),
                           SizedBox(
-                            height: 37.h,
-                          ),
-                          Center(
-                            child: Text(
-                              kWelcomeBack,
-                              style: AppStyles.poppinsTextStyle().copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 40.sp,
-                                  color: kBlackColor),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          Center(
-                            child: Text(
-                              kWelcomeDetail,
-                              style: AppStyles.poppinsTextStyle().copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: kDarkGrey),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(
                             height: 46.h,
                           ),
                           Text(kEmailAddress,
