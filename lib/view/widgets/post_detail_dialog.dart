@@ -278,7 +278,7 @@ class PostDetailDialogState extends State<PostDetailDialog> {
                               fontWeight: FontWeight.w700,
                               fontSize: 16,
                               color: kBlackColor2)),
-                      Text(widget.reportData!.reason,
+                      Text(widget.reportData!.title,
                           style: AppStyles.poppinsTextStyle().copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
