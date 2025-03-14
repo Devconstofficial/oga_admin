@@ -1,0 +1,2 @@
+E:/projects/oga_admin/android/app/.cxx/Debug/5p352x2a/x86/CMakeFiles/edit_cache.dir
+E:/projects/oga_admin/android/app/.cxx/Debug/5p352x2a/x86/CMakeFiles/rebuild_cache.dir

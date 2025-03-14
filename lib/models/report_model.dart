@@ -9,6 +9,7 @@ class ReportModel {
   String reason = "";
   String createdAt = "";
   String updatedAt = "";
+  String title = "";
 
   ReportModel({
     required this.reportId,
@@ -18,6 +19,7 @@ class ReportModel {
     required this.reason,
     required this.createdAt,
     required this.updatedAt,
+    required this.title,
   });
 
   ReportModel.empty();
@@ -30,6 +32,7 @@ class ReportModel {
     String? reason,
     String? createdAt,
     String? updatedAt,
+    String? title,
   }) {
     return ReportModel(
       reportId: reportId ?? this.reportId,
@@ -39,6 +42,7 @@ class ReportModel {
       reason: reason ?? this.reason,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      title: title ?? this.title,
     );
   }
 
@@ -51,6 +55,7 @@ class ReportModel {
     reason = json["reason"] ?? "";
     createdAt = json["createdAt"] ?? "";
     updatedAt = json["updatedAt"] ?? "";
+    title = json["title"] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +67,7 @@ class ReportModel {
       "reason": reason,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
+      'title': title,
     };
   }
 
